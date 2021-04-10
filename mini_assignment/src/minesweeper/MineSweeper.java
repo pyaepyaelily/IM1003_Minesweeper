@@ -2,23 +2,9 @@ package minesweeper;
 
 import java.awt.*;        // Use AWT's Layout Manager
 import java.awt.event.*;  // Use AWT's Event handlers
-import java.io.File;
-import java.io.FileInputStream;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Random;  // Use to generate a random int for mines position
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;     // Use Swing's Containers and Components
-//import sun.audio.AudioPlayer;
-//import sun.audio.AudioStream;
+
 
 /**
  * The Mine Sweeper Game. Left-click to reveal a cell. Right-click to
@@ -275,15 +261,6 @@ public final class MineSweeper extends JFrame implements MouseListener, ActionLi
 
     // The entry main() method
     public static void main(String[] args) {
-        try {
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("./Last-Surprise.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(inputStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (Exception e) {
-            //woops
-        }
-
         //[TODO 1]
         MineSweeper ms = new MineSweeper();
     }
@@ -459,13 +436,6 @@ public final class MineSweeper extends JFrame implements MouseListener, ActionLi
                 // [TODO 5] If you hit a mine, game over
                 // Otherwise, reveal the cell and display the number of surrounding mines
                 if (mines[rowSelected][colSelected]) {
-                    try {
-                        InputStream in = new FileInputStream(new File("./boom.wav"));
-//                        AudioStream a = new AudioStream(in);
-//                        AudioPlayer.player.start(a);
-                    } catch (Exception ex) {
-                        //woops
-                    }
                     for (int row = 0; row < rows; ++row) {
                         for (int col = 0; col < columns; ++col) {
                             if (mines[row][col]) {
