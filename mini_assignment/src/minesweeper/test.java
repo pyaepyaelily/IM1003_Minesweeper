@@ -55,6 +55,7 @@ public final class test extends JFrame implements MouseListener, ActionListener 
     ImageIcon cryImageIcon = null;
     ImageIcon lossImageIcon = null;
 
+    public static final int CELL_SIZE = 60;  // Cell width and height, in pixels
 
     JButton btnCells[][];
     // Location of mines. True if mine is present on this cell.
@@ -65,11 +66,10 @@ public final class test extends JFrame implements MouseListener, ActionListener 
 
 
     private test() {
-        screen = new JFrame("MineSweeper by Karthick, TutorialFlow.com");
+        screen = new JFrame();
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         screen.setVisible(true);
-        screen.setResizable(false);
-
+        screen.setResizable(true);
         composite.setLayout(new BorderLayout());
         smiley.setPreferredSize(new Dimension(25, 25));
 
@@ -81,9 +81,25 @@ public final class test extends JFrame implements MouseListener, ActionListener 
         smiley.addActionListener(this);
         smiley.addMouseListener(this);
         screen.add(composite);
+
+
+        //screen.getContentPane().add(new JButton("OK"));
+        screen.getContentPane().setLayout(new GridLayout(rows, columns, 2, 2)); // in 10x10 GridLayout
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
+                screen.getContentPane().add(btnCells[row][col]);          // add to content-pane in GridLayout
+            }
+        }
+
+        // Set the size of the content-pane and pack all the components
+        //  under this container.
+        screen.getContentPane().setPreferredSize(new Dimension(CELL_SIZE * columns, CELL_SIZE * rows));
         screen.pack();
-
-
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
+        setTitle("Mineswepper");
+        setVisible(true);
     }
 
     private int rows = 10;
@@ -93,24 +109,23 @@ public final class test extends JFrame implements MouseListener, ActionListener 
 //    private int mines = 8;
 
 
-//    private void initGame() {
-//        btnCells = new JButton[rows][columns];
-//        mines = new boolean[rows][columns];
-//
-//        // Reset cells, mines, and flags
-//        for (int row = 0; row < rows; row++) {
-//            for (int col = 0; col < columns; col++) {
-//                // Set all cells to un-revealed
-//                btnCells[row][col].setEnabled(true);  // enable button
-//                //btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
-//                btnCells[row][col].setBackground(Color.WHITE);
-//                //btnCells[row][col].setFont(FONT_NUMBERS);
-//                btnCells[row][col].setText("");       // display blank
-//                mines[row][col] = false;   // clear all the mines
-//                flags[row][col] = false;   // clear all the flags
-//            }
-//        }
-//    }
+    private void initGame() {
+        btnCells = new JButton[rows][columns];
+        mines = new boolean[rows][columns];
+
+        // Reset cells, mines, and flags
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                // Set all cells to un-revealed
+                btnCells[row][col].setEnabled(true);  // enable button
+                btnCells[row][col].setBackground(Color.WHITE);
+                btnCells[row][col].setPreferredSize(new Dimension(16, 16));
+                btnCells[row][col].setText("");       // display blank
+                mines[row][col] = false;   // clear all the mines
+                flags[row][col] = false;   // clear all the flags
+            }
+        }
+    }
 
 
     //Scale the Image
