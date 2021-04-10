@@ -50,10 +50,18 @@ public final class test extends JFrame implements MouseListener, ActionListener 
     private JPanel composite = new JPanel();
     private JPanel topPanel = new JPanel();
     private JButton smiley = new JButton("");
+
     ImageIcon smileyImageIcon = null;
     ImageIcon cryImageIcon = null;
     ImageIcon lossImageIcon = null;
 
+
+    JButton btnCells[][];
+    // Location of mines. True if mine is present on this cell.
+    boolean mines[][];
+
+    // User can right-click to plant/remove a flag to mark a suspicious cell
+    boolean flags[][];
 
 
     private test() {
@@ -64,6 +72,9 @@ public final class test extends JFrame implements MouseListener, ActionListener 
 
         composite.setLayout(new BorderLayout());
         smiley.setPreferredSize(new Dimension(25, 25));
+
+        smileyImageIcon = getScaledImage("mini_assignment/images/smiley.png");
+
         smiley.setIcon(smileyImageIcon);
         topPanel.add(smiley);
         composite.add(topPanel, BorderLayout.NORTH);
@@ -71,27 +82,49 @@ public final class test extends JFrame implements MouseListener, ActionListener 
         smiley.addMouseListener(this);
         screen.add(composite);
         screen.pack();
+
+
+    }
+
+    private int rows = 10;
+
+    private int columns = 10;
+
+//    private int mines = 8;
+
+
+//    private void initGame() {
+//        btnCells = new JButton[rows][columns];
+//        mines = new boolean[rows][columns];
+//
+//        // Reset cells, mines, and flags
+//        for (int row = 0; row < rows; row++) {
+//            for (int col = 0; col < columns; col++) {
+//                // Set all cells to un-revealed
+//                btnCells[row][col].setEnabled(true);  // enable button
+//                //btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
+//                btnCells[row][col].setBackground(Color.WHITE);
+//                //btnCells[row][col].setFont(FONT_NUMBERS);
+//                btnCells[row][col].setText("");       // display blank
+//                mines[row][col] = false;   // clear all the mines
+//                flags[row][col] = false;   // clear all the flags
+//            }
+//        }
+//    }
+
+
+    //Scale the Image
+    public ImageIcon getScaledImage(String imageString) {
+        ImageIcon imageIcon = new ImageIcon(imageString);
+        Image image = imageIcon.getImage();
+        Image newimg = image.getScaledInstance(20, 20,  java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(newimg);
+        return imageIcon;
     }
 
     public static void main(String[] args) {
         test ms = new test();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
