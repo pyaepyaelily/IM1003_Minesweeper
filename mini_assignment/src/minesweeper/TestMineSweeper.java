@@ -38,8 +38,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
 
 
     // Name-constants for the game properties
-    public int rows = 0;
-    public int columns = 0;
+    public int rows = 7;
+    public int columns = 7;
     public Container cp;
     // Name-constants for UI control (sizes, colors and fonts)
     public static final int CELL_SIZE = 60;  // Cell width and height, in pixels
@@ -55,7 +55,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
     JButton btnCells[][];
 
     // Number of mines in this game. Can vary to control the difficulty level.
-    int numMines;
+    int numMines = 1;
     // Location of mines. True if mine is present on this cell.
     boolean mines[][];
 
@@ -68,80 +68,80 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
     // Constructor to set up all the UI and game components
     public TestMineSweeper() {
         // Reusable input variable
-        String input;
-        boolean exitFlag = false;
-        // make a dynamic game modifier
-        do {
-            input = JOptionPane.showInputDialog(
-                    null,
-                    "How many rows would you want your mine sweeper have? (enter an integer value > 1)",
-                    "Message",
-                    JOptionPane.QUESTION_MESSAGE
-            );
-            // Some basic regex to detect digits and only degits since Java doesn't have a type safe parsing
-            if (input == null) {
-                System.exit(0);
-                return;
-            }
-            if (input.trim().matches("\\d+")) {
-                rows = Integer.parseInt(input.trim());
-                if (rows <= 1) {
-                    exitFlag = true;
-                    continue;
-                }
-                exitFlag = false;
-            } else {
-                exitFlag = true;
-            }
-        } while (exitFlag);
-
-        // reset the value of the flag for reuse
-        exitFlag = false;
-        do {
-            input = JOptionPane.showInputDialog(
-                    null,
-                    "How many columns would you want your mine sweeper have? (enter an integer value > 1)",
-                    "Message",
-                    JOptionPane.QUESTION_MESSAGE
-            );
-            if (input == null) {
-                System.exit(0);
-                return;
-            }
-            if (input.trim().matches("\\d+")) {
-                columns = Integer.parseInt(input.trim());
-                if (columns <= 1) {
-                    exitFlag = true;
-                    continue;
-                }
-                exitFlag = false;
-            } else {
-                exitFlag = true;
-            }
-        } while (exitFlag);
-
-        exitFlag = false;
-        do {
-            input = JOptionPane.showInputDialog(
-                    null,
-                    "How many mines do you want to have? (enter an integer value > 0 and <= " + ((columns * rows) - 1) + ")",
-                    "Message",
-                    JOptionPane.QUESTION_MESSAGE);
-            if (input == null) {
-                System.exit(0);
-                return;
-            }
-            if (input.trim().matches("\\d+")) {
-                numMines = Integer.parseInt(input.trim());
-                if (numMines < 0 || numMines > ((columns * rows) - 1)) {
-                    exitFlag = true;
-                    continue;
-                }
-                exitFlag = false;
-            } else {
-                exitFlag = true;
-            }
-        } while (exitFlag);
+//        String input;
+//        boolean exitFlag = false;
+//        // make a dynamic game modifier
+//        do {
+//            input = JOptionPane.showInputDialog(
+//                    null,
+//                    "How many rows would you want your mine sweeper have? (enter an integer value > 1)",
+//                    "Message",
+//                    JOptionPane.QUESTION_MESSAGE
+//            );
+//            // Some basic regex to detect digits and only degits since Java doesn't have a type safe parsing
+//            if (input == null) {
+//                System.exit(0);
+//                return;
+//            }
+//            if (input.trim().matches("\\d+")) {
+//                rows = Integer.parseInt(input.trim());
+//                if (rows <= 1) {
+//                    exitFlag = true;
+//                    continue;
+//                }
+//                exitFlag = false;
+//            } else {
+//                exitFlag = true;
+//            }
+//        } while (exitFlag);
+//
+//        // reset the value of the flag for reuse
+//        exitFlag = false;
+//        do {
+//            input = JOptionPane.showInputDialog(
+//                    null,
+//                    "How many columns would you want your mine sweeper have? (enter an integer value > 1)",
+//                    "Message",
+//                    JOptionPane.QUESTION_MESSAGE
+//            );
+//            if (input == null) {
+//                System.exit(0);
+//                return;
+//            }
+//            if (input.trim().matches("\\d+")) {
+//                columns = Integer.parseInt(input.trim());
+//                if (columns <= 1) {
+//                    exitFlag = true;
+//                    continue;
+//                }
+//                exitFlag = false;
+//            } else {
+//                exitFlag = true;
+//            }
+//        } while (exitFlag);
+//
+//        exitFlag = false;
+//        do {
+//            input = JOptionPane.showInputDialog(
+//                    null,
+//                    "How many mines do you want to have? (enter an integer value > 0 and <= " + ((columns * rows) - 1) + ")",
+//                    "Message",
+//                    JOptionPane.QUESTION_MESSAGE);
+//            if (input == null) {
+//                System.exit(0);
+//                return;
+//            }
+//            if (input.trim().matches("\\d+")) {
+//                numMines = Integer.parseInt(input.trim());
+//                if (numMines < 0 || numMines > ((columns * rows) - 1)) {
+//                    exitFlag = true;
+//                    continue;
+//                }
+//                exitFlag = false;
+//            } else {
+//                exitFlag = true;
+//            }
+//        } while (exitFlag);
 
         btnCells = new JButton[rows][columns];
         mines = new boolean[rows][columns];
