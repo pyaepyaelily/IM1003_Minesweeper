@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;  // Use to generate a random int for mines position
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;     // Use Swing's Containers and Components
 //import sun.audio.AudioPlayer;
@@ -27,7 +26,7 @@ import javax.swing.*;     // Use Swing's Containers and Components
  * mine.
  */
 @SuppressWarnings("serial")
-public final class TestMineSweeper implements ActionListener, MouseListener{
+public final class TestMineSweeper implements ActionListener, MouseListener {
     //From another minesweeper project
     private JFrame screen = null;
     private JPanel contentPanel = new JPanel();
@@ -36,10 +35,14 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
     private JButton smiley = new JButton("");
     ImageIcon smileyImageIcon = null;
 
+    private GameDifficulty gameDifficulty = new GameDifficulty(Level.BEGINNER);
+
 
     // Name-constants for the game properties
-    public int rows = 7;
-    public int columns = 7;
+//    public int rows = 10;
+//    public int columns = 10;
+//    public int numMines = 10;
+
     public Container cp;
     // Name-constants for UI control (sizes, colors and fonts)
     public static final int CELL_SIZE = 60;  // Cell width and height, in pixels
@@ -55,7 +58,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
     JButton btnCells[][];
 
     // Number of mines in this game. Can vary to control the difficulty level.
-    int numMines = 1;
+
     // Location of mines. True if mine is present on this cell.
     boolean mines[][];
 
@@ -143,6 +146,10 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
 //            }
 //        } while (exitFlag);
 
+        final int rows = gameDifficulty.getRow();
+        final int columns = gameDifficulty.getColumns();
+        final int mineCount = gameDifficulty.getMineCount();
+
         btnCells = new JButton[rows][columns];
         mines = new boolean[rows][columns];
         flags = new boolean[rows][columns];
@@ -157,27 +164,23 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
         smiley.addActionListener(this);
         smiley.addMouseListener(this);
 
-
-        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
         contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
-        buttonPanel.setLayout(new GridLayout(rows, columns, 10, 10));
+        buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
-                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
-                buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
+//        for (int row = 0; row < rows; row++) {
+//            for (int col = 0; col < columns; col++) {
+//                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
+//                buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
+//            }
+//        }
 
-                // Add MouseEvent listener to process the left/right mouse-click
-                // ... [TODO 4]
-                // btnCells[row][col].addMouseListener(listener);
-            }
-        }
-        contentPanel.add(buttonPanel);
+//        contentPanel.add(buttonPanel);
 
         screen.add(topPanel, BorderLayout.NORTH);
         screen.add(contentPanel, BorderLayout.SOUTH);
-
+        screen.setJMenuBar(createMenuBar());
         //cp.setPreferredSize(new Dimension(CELL_SIZE * columns, CELL_SIZE * rows));
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
         screen.setTitle("TestFrame");
@@ -185,18 +188,27 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
 //        screen.setResizable(false);
         screen.pack();
         // Initialize for a new game
-        initGame();
+        initGame(rows, columns, mineCount);
     }
 
     // Initialize and re-initialize a new game
-    private void initGame() {
+    private void initGame(int rows, int columns, int numMines) {
         // Reset cells, mines, and flags
+
         CellMouseListener listener = new CellMouseListener();
         numRevealed = 0;
+
+        System.out.println(rows);
+        System.out.println(columns);
+        System.out.println(numMines);
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 // Set all cells to un-revealed
+                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
+                buttonPanel.add(btnCells[row][col]);
+
+
                 btnCells[row][col].setEnabled(true);  // enable button
                 btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
                 btnCells[row][col].setBackground(Color.white);
@@ -207,6 +219,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
                 flags[row][col] = false;   // clear all the flags
             }
         }
+
+        contentPanel.add(buttonPanel);
 
         Random rand = new Random();
         // Set the number of mines and the mines' location
@@ -260,6 +274,73 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
 
     }
 
+    public JMenuBar createMenuBar() {
+
+        JMenuBar mBar = new JMenuBar();
+        JMenu game = new JMenu("Game");
+
+        JMenu help = new JMenu("Help");
+
+        final JMenuItem miNew = new JMenuItem("New");
+        final JMenuItem miBeg = new JMenuItem("Beginner");
+        final JMenuItem miInter = new JMenuItem("Intermediate");
+        final JMenuItem miExp = new JMenuItem("Expert");
+        final JMenuItem miExit = new JMenuItem("Exit");
+
+        final JMenuItem about = new JMenuItem("About MineSweeper....");
+
+        game.add(miNew);
+        game.add(miBeg);
+        game.add(miInter);
+        game.add(miExp);
+        game.add(miExit);
+
+        help.add(about);
+
+        ActionListener MENULSTNR = ae -> {
+            if (miNew == ae.getSource()) {
+                gameDifficulty = new GameDifficulty(Level.BEGINNER);
+                initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
+            }
+            if (miBeg == ae.getSource()) {
+                gameDifficulty = new GameDifficulty(Level.BEGINNER);
+                initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
+
+            }
+            if (miInter == ae.getSource()) {
+                gameDifficulty = new GameDifficulty(Level.MEDIUM);
+                initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
+
+            }
+            if (miExp == ae.getSource()) {
+                gameDifficulty = new GameDifficulty(Level.HIGH);
+                initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
+
+            }
+            if (miExit == ae.getSource()) {
+                if (screen != null) {
+                    screen.dispose();
+                }
+                System.exit(0);
+
+            }
+
+            if (about == ae.getSource()) {
+                System.out.println(" IM1003");
+            }
+        };
+
+        miNew.addActionListener(MENULSTNR);
+        miBeg.addActionListener(MENULSTNR);
+        miInter.addActionListener(MENULSTNR);
+        miExp.addActionListener(MENULSTNR);
+        miExit.addActionListener(MENULSTNR);
+        about.addActionListener(MENULSTNR);
+        mBar.add(game);
+        mBar.add(help);
+        return mBar;
+    }
+
 
     // [TODO 2]
     private class CellMouseListener extends MouseAdapter {
@@ -273,9 +354,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
             // Get the source object that fired the Event
             JButton source = (JButton) e.getSource();
 
-            // refactored your code here to make it more neater
-            // didn't knew this was a thing in programming until I looked it up like even JS has a similar implementation
-            // https://stackoverflow.com/questions/886955/how-do-i-break-out-of-nested-loops-in-java
+            int rows = gameDifficulty.getRow();
+            int columns = gameDifficulty.getColumns();
+            int numMines = gameDifficulty.getMineCount();
             rowloop:
             for (int row = 0; row < rows; ++row) {
                 for (int col = 0; col < columns; ++col) {
@@ -370,6 +451,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
          * @param col
          */
         private void revealBlanks(int row, int col) {
+            int rows = gameDifficulty.getRow();
+            int columns = gameDifficulty.getColumns();
+
             if (row < 0 || row >= rows || col < 0 || col >= columns) {
                 return;
             }
@@ -402,6 +486,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
 
         // this is calculate the surrounding mine number
         private int calculateMineNumber(int row, int col) {
+            int rows = gameDifficulty.getRow();
+            int columns = gameDifficulty.getColumns();
+
             int sum = 0;
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
@@ -425,9 +512,13 @@ public final class TestMineSweeper implements ActionListener, MouseListener{
     public void actionPerformed(ActionEvent ae) {
 
         if (ae.getSource() == smiley) {
-            initGame();
+            int rows = gameDifficulty.getRow();
+            int columns = gameDifficulty.getColumns();
+            int numMines = gameDifficulty.getMineCount();
+            initGame(rows, columns, numMines);
         }
     }
+
     public ImageIcon getScaledImage(String imageString) {
         ImageIcon imageIcon = new ImageIcon(imageString);
         Image image = imageIcon.getImage();
