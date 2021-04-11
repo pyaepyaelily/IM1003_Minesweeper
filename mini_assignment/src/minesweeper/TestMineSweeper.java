@@ -34,6 +34,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     private JPanel topPanel = new JPanel();
     private JButton smiley = new JButton("");
     ImageIcon smileyImageIcon = null;
+    ImageIcon boomImageIcon = null;
+    ImageIcon flagImageIcon = null;
 
     private GameDifficulty gameDifficulty = new GameDifficulty(Level.BEGINNER);
 
@@ -155,6 +157,14 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         flags = new boolean[rows][columns];
 
         screen = new JFrame();
+        boomImageIcon = getScaledImage("mini_assignment/images/boom.png");
+        screen.setIconImage(boomImageIcon.getImage());
+        screen.setJMenuBar(createMenuBar());
+        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
+        screen.setTitle("TestFrame");
+        screen.setVisible(true);   // show it
+//        screen.setResizable(false);
+
 
         //button to put in topPanel
         smiley.setPreferredSize(new Dimension(25, 25));
@@ -164,29 +174,28 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         smiley.addActionListener(this);
         smiley.addMouseListener(this);
 
-        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
+
+//        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
+//        contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+
+        contentPanel.setLayout(new BorderLayout());
         contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
         buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
 
-//        for (int row = 0; row < rows; row++) {
-//            for (int col = 0; col < columns; col++) {
-//                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
-//                buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
-//            }
-//        }
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
+                buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
+            }
+        }
 
-//        contentPanel.add(buttonPanel);
+        contentPanel.add(buttonPanel);
 
-        screen.add(topPanel, BorderLayout.NORTH);
+        screen.add(topPanel, BorderLayout.CENTER);
         screen.add(contentPanel, BorderLayout.SOUTH);
-        screen.setJMenuBar(createMenuBar());
-        //cp.setPreferredSize(new Dimension(CELL_SIZE * columns, CELL_SIZE * rows));
-        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
-        screen.setTitle("TestFrame");
-        screen.setVisible(true);   // show it
-//        screen.setResizable(false);
         screen.pack();
+
         // Initialize for a new game
         initGame(rows, columns, mineCount);
     }
@@ -205,8 +214,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 // Set all cells to un-revealed
-                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
-                buttonPanel.add(btnCells[row][col]);
+//                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
+//                buttonPanel.add(btnCells[row][col]);
 
 
                 btnCells[row][col].setEnabled(true);  // enable button
@@ -217,10 +226,11 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 btnCells[row][col].setText("");       // display blank
                 mines[row][col] = false;   // clear all the mines
                 flags[row][col] = false;   // clear all the flags
+                btnCells[row][col].setIcon(null);
             }
         }
 
-        contentPanel.add(buttonPanel);
+//        contentPanel.add(buttonPanel);
 
         Random rand = new Random();
         // Set the number of mines and the mines' location
@@ -357,6 +367,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             int rows = gameDifficulty.getRow();
             int columns = gameDifficulty.getColumns();
             int numMines = gameDifficulty.getMineCount();
+
             rowloop:
             for (int row = 0; row < rows; ++row) {
                 for (int col = 0; col < columns; ++col) {
@@ -386,7 +397,10 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                             if (mines[row][col]) {
                                 btnCells[row][col].setForeground(FGCOLOR_REVEALED);
                                 btnCells[row][col].setBackground(BGCOLOR_REVEALED);
-                                btnCells[row][col].setText("B");
+                                //boom image
+                                boomImageIcon = getScaledImage("mini_assignment/images/boom.png");
+                                btnCells[row][col].setIcon(boomImageIcon);
+//                                btnCells[row][col].setText("B");
                             }
                             btnCells[row][col].removeMouseListener(this);
                             btnCells[row][col].setEnabled(false);
@@ -417,10 +431,13 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 // [TODO 6] If the location is flagged, remove the flag
                 // Otherwise, plant a flag.
                 if (flags[rowSelected][colSelected]) {
-                    btnCells[rowSelected][colSelected].setText("");
+                    btnCells[rowSelected][colSelected].setIcon(null);
+//                    btnCells[rowSelected][colSelected].setText("");
                     flags[rowSelected][colSelected] = false;
                 } else {
-                    btnCells[rowSelected][colSelected].setText("^");
+                    flagImageIcon = getScaledImage("mini_assignment/images/flag.png");
+                    btnCells[rowSelected][colSelected].setIcon(flagImageIcon);
+//                    btnCells[rowSelected][colSelected].setText("^");
                     flags[rowSelected][colSelected] = true;
                 }
 
