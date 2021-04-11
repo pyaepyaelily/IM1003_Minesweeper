@@ -27,7 +27,7 @@ import javax.swing.*;     // Use Swing's Containers and Components
  * mine.
  */
 @SuppressWarnings("serial")
-public final class testFrame{
+public final class testFrame {
     //From another minesweeper project
     private JFrame screen = null;
     private JPanel contentPanel = new JPanel();
@@ -149,35 +149,27 @@ public final class testFrame{
 
         screen = new JFrame();
 
-        //button to put in topPanel
+        //smiley button to put in topPanel
         smiley.setPreferredSize(new Dimension(25, 25));
         smiley.setIcon(smileyImageIcon);
-//        smileyImageIcon = getScaledImage("mini_assignment/images/smiley.png");
+        smileyImageIcon = getScaledImage("mini_assignment/images/smiley.png");
         topPanel.add(smiley);
 
-        JPanel contentPane = new JPanel();
-        contentPane.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
-        contentPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-
-        JPanel buttonPanel = new JPanel();
+        //for minesweeper buttons
+        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         buttonPanel.setLayout(new GridLayout(rows, columns, 10, 10));
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 btnCells[row][col] = new JButton();  // Allocate each JButton of the array
                 buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
-
-                // Add MouseEvent listener to process the left/right mouse-click
-                // ... [TODO 4]
-                // btnCells[row][col].addMouseListener(listener);
             }
         }
-        contentPane.add(buttonPanel);
+        contentPanel.add(buttonPanel);
 
         screen.add(topPanel, BorderLayout.NORTH);
-        screen.add(contentPane, BorderLayout.SOUTH);
-
-        //cp.setPreferredSize(new Dimension(CELL_SIZE * columns, CELL_SIZE * rows));
+        screen.add(contentPanel, BorderLayout.SOUTH);
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
         screen.setTitle("TestFrame");
         screen.setVisible(true);   // show it
@@ -219,45 +211,6 @@ public final class testFrame{
         }
     }
 
-    /**
-     * *
-     * Overload method to re-initialize the game with new difficulty
-     *
-     * @param newRow
-     * @param newCol
-     * @param newNumMines
-     */
-//    private void initGame(int newRow, int newCol, int newNumMines) {
-//        rows = newRow;
-//        columns = newCol;
-//        numMines = newNumMines;
-//
-//        btnCells = new JButton[rows][columns];
-//        mines = new boolean[rows][columns];
-//        flags = new boolean[rows][columns];
-//
-//        cp = this.getContentPane();
-//        cp.removeAll();
-//        cp.setLayout(new GridLayout(rows, columns, 2, 2));
-//
-//        for (int row = 0; row < rows; row++) {
-//            for (int col = 0; col < columns; col++) {
-//                btnCells[row][col] = new JButton();
-//                cp.add(btnCells[row][col]);
-//            }
-//        }
-//
-//        cp.setPreferredSize(new Dimension(CELL_SIZE * columns, CELL_SIZE * rows));
-//        pack();
-//
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        setTitle("Mineswepper");
-//        setVisible(true);
-//        initGame();
-//    }
-
-
-    // The entry main() method
     public static void main(String[] args) {
         try {
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("./Last-Surprise.wav"));
@@ -272,6 +225,13 @@ public final class testFrame{
         testFrame ms = new testFrame();
     }
 
+    public ImageIcon getScaledImage(String imageString) {
+        ImageIcon imageIcon = new ImageIcon(imageString);
+        Image image = imageIcon.getImage();
+        Image newimg = image.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(newimg);
+        return imageIcon;
+    }
 
 
     // [TODO 2]
