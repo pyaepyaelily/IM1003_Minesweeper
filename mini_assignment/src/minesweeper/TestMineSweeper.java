@@ -30,7 +30,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
 
     private GameDifficulty gameDifficulty = new GameDifficulty(Level.NEW);
-    private MineSweeperImage mineSweeperImages = mineSweeperImages = new MineSweeperImage();
+    private MineSweeperImage mineSweeperImages = new MineSweeperImage();
 
     ImageIcon smileyImageIcon = mineSweeperImages.getImage("smiley");
     ImageIcon boomImageIcon = mineSweeperImages.getImage("boom");
