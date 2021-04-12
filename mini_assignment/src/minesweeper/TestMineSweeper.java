@@ -29,7 +29,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     private JButton smiley = new JButton("");
 
 
-    private GameDifficulty gameDifficulty = new GameDifficulty(Level.NEW);
+    private GameDifficulty gameDifficulty = new GameDifficulty(Level.BEGINNER);
     private MineSweeperImage mineSweeperImages = new MineSweeperImage();
 
     ImageIcon smileyImageIcon = mineSweeperImages.getImage("smiley");
@@ -82,8 +82,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
         screen.setTitle("TestFrame");
         screen.setVisible(true);   // show it
-//        screen.setPreferredSize(new Dimension(600, 600));
-        screen.setResizable(false);
+        screen.setPreferredSize(new Dimension(600, 600));
+//        screen.setResizable(false);
 
 
         //button to put in topPanel
@@ -95,7 +95,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         //Need to change this
 //        topPanel.setLayout(new BorderLayout());
         topPanel.add(smiley, BorderLayout.CENTER);
-        topPanel.setPreferredSize(new Dimension(600, 35));
+        topPanel.setPreferredSize(new Dimension(35, 35));
 //        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
 //        contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
@@ -279,7 +279,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
                 clearGame();
-                gameDifficulty = new GameDifficulty(Level.NEW);
+                gameDifficulty = new GameDifficulty(Level.BEGINNER);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
             }
             if (miBeg == ae.getSource()) {
