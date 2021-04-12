@@ -1,21 +1,15 @@
 package minesweeper;
 
-import java.awt.*;        // Use AWT's Layout Manager
-import java.awt.event.*;  // Use AWT's Event handlers
-import java.io.File;
-import java.io.FileInputStream;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Random;  // Use to generate a random int for mines position
-import java.util.logging.Logger;
-import javax.swing.*;     // Use Swing's Containers and Components
+import java.util.Random;
 //import sun.audio.AudioPlayer;
 //import sun.audio.AudioStream;
 
@@ -131,19 +125,17 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         screen.pack();
 
         // Initialize for a new game
+        clearGame();
         initGame(rows, columns, mineCount);
     }
 
-    // Initialize and re-initialize a new game
-    private void initGame(int rows, int columns, int numMines) {
-        // Reset cells, mines, and flags
+    private void clearGame() {
+
+        var rows = gameDifficulty.getRow();
+        var columns = gameDifficulty.getColumns();
 
         CellMouseListener listener = new CellMouseListener();
         numRevealed = 0;
-
-//        System.out.println(rows);
-//        System.out.println(columns);
-//        System.out.println(numMines);
 
         if (topPanel.getBackground() == Color.black) {
             for (int row = 0; row < rows; row++) {
@@ -166,8 +158,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     // Set all cells to un-revealed
 //                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
 //                buttonPanel.add(btnCells[row][col]);
-
-
                     btnCells[row][col].setEnabled(true);  // enable button
                     btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
                     btnCells[row][col].setBackground(Color.white);
@@ -177,13 +167,13 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     mines[row][col] = false;   // clear all the mines
                     flags[row][col] = false;   // clear all the flags
                     btnCells[row][col].setIcon(null);
-//                btnCells[row][col].setSize(new Dimension(30, 30));
                 }
             }
         }
+    }
 
-
-//        contentPanel.add(buttonPanel);
+    // Initialize and re-initialize a new game
+    private void initGame(int rows, int columns, int numMines) {
 
         Random rand = new Random();
         // Set the number of mines and the mines' location
@@ -254,7 +244,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         final JMenuItem themeDark = new JMenuItem("Dark Theme");
         final JMenuItem about = new JMenuItem("About MineSweeper....");
         final JMenuItem instr = new JMenuItem("Instructions");
-	final JMenuItem tips = new JMenuItem("Tips");
+        final JMenuItem tips = new JMenuItem("Tips");
 
         game.add(miNew);
         game.add(miBeg);
@@ -265,7 +255,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         theme.add(themeDark);
         help.add(about);
         help.add(instr);
-	help.add(tips);
+        help.add(tips);
 
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
@@ -278,6 +268,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
             }
             if (miInter == ae.getSource()) {
+                clearGame();
                 gameDifficulty = new GameDifficulty(Level.MEDIUM);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
@@ -328,25 +319,25 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                         JOptionPane.PLAIN_MESSAGE
                 );
             }
-	    if (instr == ae.getSource()) {
-			JOptionPane.showMessageDialog(null, "Instructions:\r\n" + "\r\n"
-				+ "· You are presented with a board of squares. Some squares contain mines (bombs), others don't. \r\n"
-				+ "· Your goal is to clear the board of squares without triggering any bombs. \r\n"
-				+ "· To open a square, point your cursor at the square and click on it. \r\n"
-				+ "· If you manage to click all the squares (without clicking on any bombs), you win.  \r\n"
-				+ "· If you click on any single square containing a bomb, you lose. So be careful! \r\n" + "\r\n"
-				+ "· Have Fun!",
-				"Instructions", JOptionPane.INFORMATION_MESSAGE
-				);
+            if (instr == ae.getSource()) {
+                JOptionPane.showMessageDialog(null, "Instructions:\r\n" + "\r\n"
+                                + "· You are presented with a board of squares. Some squares contain mines (bombs), others don't. \r\n"
+                                + "· Your goal is to clear the board of squares without triggering any bombs. \r\n"
+                                + "· To open a square, point your cursor at the square and click on it. \r\n"
+                                + "· If you manage to click all the squares (without clicking on any bombs), you win.  \r\n"
+                                + "· If you click on any single square containing a bomb, you lose. So be careful! \r\n" + "\r\n"
+                                + "· Have Fun!",
+                        "Instructions", JOptionPane.INFORMATION_MESSAGE
+                );
             }
-	    if (tips == ae.getSource()) {
-            	JOptionPane.showMessageDialog(null, "Tips: \r\n" + "\r\n"
-            			+ "· Try opening the four corners of the board first when you start. \r\n"
-            			+ "· Next, try opening any square in the middle. \r\n"
-            			+ "· Mark all the mines that are obvious using flags. For example: eight 1's surrounding an unopened square. \r\n" + "\r\n"
-            			+ " · Good Luck!",
-            			"Tips", JOptionPane.PLAIN_MESSAGE
-            	);
+            if (tips == ae.getSource()) {
+                JOptionPane.showMessageDialog(null, "Tips: \r\n" + "\r\n"
+                                + "· Try opening the four corners of the board first when you start. \r\n"
+                                + "· Next, try opening any square in the middle. \r\n"
+                                + "· Mark all the mines that are obvious using flags. For example: eight 1's surrounding an unopened square. \r\n" + "\r\n"
+                                + " · Good Luck!",
+                        "Tips", JOptionPane.PLAIN_MESSAGE
+                );
             }
 
         };
@@ -360,7 +351,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         themeDark.addActionListener(MENULSTNR);
         about.addActionListener(MENULSTNR);
         instr.addActionListener(MENULSTNR);
-	tips.addActionListener(MENULSTNR);
+        tips.addActionListener(MENULSTNR);
         mBar.add(game);
         mBar.add(theme);
         mBar.add(help);
@@ -570,14 +561,11 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
     //Click on smiley button to reset the game
     public void actionPerformed(ActionEvent ae) {
-
         if (ae.getSource() == smiley) {
             int rows = gameDifficulty.getRow();
             int columns = gameDifficulty.getColumns();
             int numMines = gameDifficulty.getMineCount();
-//            if (topPanel.getBackground() == Color.black){
-//
-//            }
+            clearGame();
             initGame(rows, columns, numMines);
         }
     }
