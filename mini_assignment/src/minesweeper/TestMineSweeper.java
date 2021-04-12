@@ -72,82 +72,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
     // Constructor to set up all the UI and game components
     public TestMineSweeper() {
-        // Reusable input variable
-//        String input;
-//        boolean exitFlag = false;
-//        // make a dynamic game modifier
-//        do {
-//            input = JOptionPane.showInputDialog(
-//                    null,
-//                    "How many rows would you want your mine sweeper have? (enter an integer value > 1)",
-//                    "Message",
-//                    JOptionPane.QUESTION_MESSAGE
-//            );
-//            // Some basic regex to detect digits and only degits since Java doesn't have a type safe parsing
-//            if (input == null) {
-//                System.exit(0);
-//                return;
-//            }
-//            if (input.trim().matches("\\d+")) {
-//                rows = Integer.parseInt(input.trim());
-//                if (rows <= 1) {
-//                    exitFlag = true;
-//                    continue;
-//                }
-//                exitFlag = false;
-//            } else {
-//                exitFlag = true;
-//            }
-//        } while (exitFlag);
-//
-//        // reset the value of the flag for reuse
-//        exitFlag = false;
-//        do {
-//            input = JOptionPane.showInputDialog(
-//                    null,
-//                    "How many columns would you want your mine sweeper have? (enter an integer value > 1)",
-//                    "Message",
-//                    JOptionPane.QUESTION_MESSAGE
-//            );
-//            if (input == null) {
-//                System.exit(0);
-//                return;
-//            }
-//            if (input.trim().matches("\\d+")) {
-//                columns = Integer.parseInt(input.trim());
-//                if (columns <= 1) {
-//                    exitFlag = true;
-//                    continue;
-//                }
-//                exitFlag = false;
-//            } else {
-//                exitFlag = true;
-//            }
-//        } while (exitFlag);
-//
-//        exitFlag = false;
-//        do {
-//            input = JOptionPane.showInputDialog(
-//                    null,
-//                    "How many mines do you want to have? (enter an integer value > 0 and <= " + ((columns * rows) - 1) + ")",
-//                    "Message",
-//                    JOptionPane.QUESTION_MESSAGE);
-//            if (input == null) {
-//                System.exit(0);
-//                return;
-//            }
-//            if (input.trim().matches("\\d+")) {
-//                numMines = Integer.parseInt(input.trim());
-//                if (numMines < 0 || numMines > ((columns * rows) - 1)) {
-//                    exitFlag = true;
-//                    continue;
-//                }
-//                exitFlag = false;
-//            } else {
-//                exitFlag = true;
-//            }
-//        } while (exitFlag);
-
         final int rows = gameDifficulty.getRow();
         final int columns = gameDifficulty.getColumns();
         final int mineCount = gameDifficulty.getMineCount();
@@ -157,8 +81,10 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         flags = new boolean[rows][columns];
 
         screen = new JFrame();
-        boomImageIcon = getScaledImage("mini_assignment/images/boom.png");
-        screen.setIconImage(boomImageIcon.getImage());
+
+//        screen.setIconImage(boomImageIcon.getImage());
+        screen.setIconImage(mineSweeperImages("boom").getImage());
+
         screen.setJMenuBar(createMenuBar());
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
         screen.setTitle("TestFrame");
@@ -168,8 +94,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         //button to put in topPanel
         smiley.setPreferredSize(new Dimension(25, 25));
-        smileyImageIcon = getScaledImage("mini_assignment/images/smiley.png");
-        smiley.setIcon(smileyImageIcon);
+        smiley.setIcon(mineSweeperImages("smiley"));
+
         topPanel.add(smiley);
         smiley.addActionListener(this);
         smiley.addMouseListener(this);
@@ -186,6 +112,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 btnCells[row][col] = new JButton();  // Allocate each JButton of the array
+                btnCells[row][col].setSize(new Dimension(30, 30));
                 buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
             }
         }
@@ -227,6 +154,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 mines[row][col] = false;   // clear all the mines
                 flags[row][col] = false;   // clear all the flags
                 btnCells[row][col].setIcon(null);
+                btnCells[row][col].setSize(new Dimension(30, 30));
             }
         }
 
@@ -243,6 +171,24 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             } while (mines[row][col]);
             mines[row][col] = true;
         }
+    }
+
+    public ImageIcon mineSweeperImages(String choice) {
+        switch (choice) {
+            case "smiley" -> {
+                smileyImageIcon = getScaledImage("mini_assignment/images/smiley.png");
+                return smileyImageIcon;
+            }
+            case "boom" -> {
+                boomImageIcon = getScaledImage("mini_assignment/images/boom.png");
+                return boomImageIcon;
+            }
+            case "flag" -> {
+                flagImageIcon = getScaledImage("mini_assignment/images/flag.png");
+                return flagImageIcon;
+            }
+        }
+        return null;
     }
 
     public static void main(String[] args) {
@@ -291,10 +237,10 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         JMenu help = new JMenu("Help");
 
-        final JMenuItem miNew = new JMenuItem("New");
-        final JMenuItem miBeg = new JMenuItem("Beginner");
-        final JMenuItem miInter = new JMenuItem("Intermediate");
-        final JMenuItem miExp = new JMenuItem("Expert");
+        final JMenuItem miNew = new JMenuItem("New (rows:10, columns:10, mines:10)");
+        final JMenuItem miBeg = new JMenuItem("Beginner (rows:10, columns:10, mines:10)");
+        final JMenuItem miInter = new JMenuItem("Intermediate (rows:20, columns:20, mines:20)");
+        final JMenuItem miExp = new JMenuItem("Expert (rows:30, columns:30, mines:30)");
         final JMenuItem miExit = new JMenuItem("Exit");
 
         final JMenuItem about = new JMenuItem("About MineSweeper....");
@@ -397,10 +343,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                             if (mines[row][col]) {
                                 btnCells[row][col].setForeground(FGCOLOR_REVEALED);
                                 btnCells[row][col].setBackground(BGCOLOR_REVEALED);
-                                //boom image
-                                boomImageIcon = getScaledImage("mini_assignment/images/boom.png");
-                                btnCells[row][col].setIcon(boomImageIcon);
-//                                btnCells[row][col].setText("B");
+                                btnCells[row][col].setIcon(mineSweeperImages("boom"));
+//                                btnCells[row][col].setText("Boom");
                             }
                             btnCells[row][col].removeMouseListener(this);
                             btnCells[row][col].setEnabled(false);
@@ -435,9 +379,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 //                    btnCells[rowSelected][colSelected].setText("");
                     flags[rowSelected][colSelected] = false;
                 } else {
-                    flagImageIcon = getScaledImage("mini_assignment/images/flag.png");
-                    btnCells[rowSelected][colSelected].setIcon(flagImageIcon);
-//                    btnCells[rowSelected][colSelected].setText("^");
+                    btnCells[rowSelected][colSelected].setIcon(mineSweeperImages("flag"));
+//                    btnCells[rowSelected][colSelected].setText("flag");
                     flags[rowSelected][colSelected] = true;
                 }
 
@@ -446,7 +389,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             if (numRevealed == (rows * columns) - numMines) {
                 JOptionPane.showMessageDialog(
                         null,
-                        "Congratulations!, you've finished the game",
+                        "Congratulations, You won!!",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE
                 );
