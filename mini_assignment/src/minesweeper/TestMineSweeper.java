@@ -29,7 +29,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     private JButton smiley = new JButton("");
 
 
-    private GameDifficulty gameDifficulty = new GameDifficulty(Level.BEGINNER);
+    private GameDifficulty gameDifficulty = new GameDifficulty(Level.NEW);
     private MineSweeperImage mineSweeperImages = mineSweeperImages = new MineSweeperImage();
 
     ImageIcon smileyImageIcon = mineSweeperImages.getImage("smiley");
@@ -279,7 +279,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
                 clearGame();
-                gameDifficulty = new GameDifficulty(Level.BEGINNER);
+                gameDifficulty = new GameDifficulty(Level.NEW);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
             }
             if (miBeg == ae.getSource()) {

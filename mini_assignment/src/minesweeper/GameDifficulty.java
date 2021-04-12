@@ -1,6 +1,7 @@
 package minesweeper;
 
 enum Level {
+    NEW,
     BEGINNER,
     MEDIUM,
     HIGH
@@ -16,14 +17,17 @@ public class GameDifficulty {
 
     public int getRow(){
          switch (this.level){
+             case NEW -> {
+                 return 10;
+             }
             case BEGINNER -> {
-                return 10;
+                return 12;
             }
             case MEDIUM -> {
-                return 20;
+                return 15;
             }
             case HIGH -> {
-                return 30;
+                return 24;
             }
         }
         return 10;
@@ -31,11 +35,14 @@ public class GameDifficulty {
 
     public int getColumns(){
         switch (this.level){
-            case BEGINNER -> {
+            case NEW -> {
                 return 10;
             }
+            case BEGINNER -> {
+                return 12;
+            }
             case MEDIUM -> {
-                return 20;
+                return 15;
             }
             case HIGH -> {
                 return 30;
@@ -46,14 +53,17 @@ public class GameDifficulty {
 
     public int getMineCount(){
         switch (this.level){
-            case BEGINNER -> {
+            case NEW -> {
                 return 10;
             }
+            case BEGINNER -> {
+                return 12;
+            }
             case MEDIUM -> {
-                return 20;
+                return 50;
             }
             case HIGH -> {
-                return 30;
+                return 80;
             }
         }
         return 10;
