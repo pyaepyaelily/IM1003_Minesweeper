@@ -96,7 +96,11 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         smiley.setPreferredSize(new Dimension(25, 25));
         smiley.setIcon(mineSweeperImages("smiley"));
 
-        topPanel.add(smiley);
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(smiley, BorderLayout.CENTER);
+
+//        topPanel.setSize(25,25);
+//        topPanel.addComponentListener(new ResizeListener());
         smiley.addActionListener(this);
         smiley.addMouseListener(this);
 
@@ -173,6 +177,15 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         }
     }
 
+    class ResizeListener extends ComponentAdapter {
+        public void componentResized(ComponentEvent e) {
+            // Recalculate the variable you mentioned
+//            e.getComponent().setSize(25,25);
+            System.out.println(e.getComponent().getSize());
+            System.out.println("resize");
+        }
+    }
+
     public ImageIcon mineSweeperImages(String choice) {
         switch (choice) {
             case "smiley" -> {
@@ -234,7 +247,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         JMenuBar mBar = new JMenuBar();
         JMenu game = new JMenu("Game");
-
         JMenu help = new JMenu("Help");
 
         final JMenuItem miNew = new JMenuItem("New (rows:10, columns:10, mines:10)");
@@ -242,7 +254,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         final JMenuItem miInter = new JMenuItem("Intermediate (rows:20, columns:20, mines:20)");
         final JMenuItem miExp = new JMenuItem("Expert (rows:30, columns:30, mines:30)");
         final JMenuItem miExit = new JMenuItem("Exit");
-
         final JMenuItem about = new JMenuItem("About MineSweeper....");
 
         game.add(miNew);
@@ -250,7 +261,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         game.add(miInter);
         game.add(miExp);
         game.add(miExit);
-
         help.add(about);
 
         ActionListener MENULSTNR = ae -> {
@@ -282,7 +292,12 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             }
 
             if (about == ae.getSource()) {
-                System.out.println(" IM1003");
+                JOptionPane.showMessageDialog(
+                        null,
+                        "This is a mini-assignment using Java",
+                        "About this",
+                        JOptionPane.PLAIN_MESSAGE
+                );
             }
         };
 
