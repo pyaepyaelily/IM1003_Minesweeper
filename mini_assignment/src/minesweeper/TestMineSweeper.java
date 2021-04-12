@@ -26,7 +26,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     private JPanel contentPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
     private JPanel topPanel = new JPanel();
-    private JButton restartButton = new JButton("");
+    private JButton smiley = new JButton("");
 
 
     private GameDifficulty gameDifficulty = new GameDifficulty(Level.BEGINNER);
@@ -38,7 +38,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     ImageIcon num1ImageIcon = mineSweeperImages.getImage("num1");
     ImageIcon num2ImageIcon = mineSweeperImages.getImage("num2");
     ImageIcon num3ImageIcon = mineSweeperImages.getImage("num3");
-    ImageIcon deadImageIcon = mineSweeperImages.getImage("dead");
 
     // Name-constants for the game properties
 //    public int rows = 10;
@@ -88,18 +87,18 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         screen.setTitle("TestFrame");
         screen.setVisible(true);   // show it
         screen.setPreferredSize(new Dimension(600, 600));
-        screen.setResizable(false);
+//        screen.setResizable(false);
 
 
         //button to put in topPanel
-        restartButton.setPreferredSize(new Dimension(25, 25));
-        restartButton.setIcon(smileyImageIcon);
-        restartButton.addActionListener(this);
-        restartButton.addMouseListener(this);
+        smiley.setPreferredSize(new Dimension(25, 25));
+        smiley.setIcon(smileyImageIcon);
+        smiley.addActionListener(this);
+        smiley.addMouseListener(this);
 
         //Need to change this
 //        topPanel.setLayout(new BorderLayout());
-        topPanel.add(restartButton, BorderLayout.CENTER);
+        topPanel.add(smiley, BorderLayout.CENTER);
         topPanel.setPreferredSize(new Dimension(35, 35));
 //        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
 //        contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
@@ -108,7 +107,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         contentPanel.setPreferredSize(new Dimension(rows * rows, 500));
-        buttonPanel.setLayout(new GridLayout(rows, columns));
+        buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
 
 
         contentPanel.add(buttonPanel);
@@ -128,7 +127,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         CellMouseListener listener = new CellMouseListener();
         numRevealed = 0;
-        restartButton.setIcon(smileyImageIcon);
+
         if (topPanel.getBackground() == Color.black) {
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < columns; col++) {
@@ -172,7 +171,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         contentPanel.remove(buttonPanel);
         buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(rows, columns));
+        buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 btnCells[row][col] = new JButton();  // Allocate each JButton of the array
@@ -183,7 +182,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         screen.pack();
 
         CellMouseListener listener = new CellMouseListener();
-        if (topPanel.getBackground() == Color.black) {
+        if (topPanel.getBackground() == Color.black) {          // Dark theme
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < columns; col++) {
                     btnCells[row][col].setEnabled(true);  // enable button
@@ -197,8 +196,52 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     btnCells[row][col].setIcon(null);
                 }
             }
-        } else {
+        } else if (topPanel.getBackground() == Color.blue) {        // Blue theme
             for (int row = 0; row < rows; row++) {
+                Color myOceanColor = new Color(0, 105, 148);        // custom color constructor for blue theme
+                for (int col = 0; col < columns; col++) {
+                    btnCells[row][col].setEnabled(true);  // enable button
+                    btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
+                    btnCells[row][col].setBackground(myOceanColor);
+                    btnCells[row][col].setFont(FONT_NUMBERS);
+                    btnCells[row][col].addMouseListener(listener);
+                    btnCells[row][col].setText("");       // display blank
+                    mines[row][col] = false;   // clear all the mines
+                    flags[row][col] = false;   // clear all the flags
+                    btnCells[row][col].setIcon(null);
+                }
+            }
+        } else if (topPanel.getBackground() == Color.green) {       // Green theme
+            for (int row = 0; row < rows; row++) {
+                Color myForestColor = new Color(1, 152, 117);       // custom color constructor for green theme
+                for (int col = 0; col < columns; col++) {
+                    btnCells[row][col].setEnabled(true);  // enable button
+                    btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
+                    btnCells[row][col].setBackground(myForestColor);
+                    btnCells[row][col].setFont(FONT_NUMBERS);
+                    btnCells[row][col].addMouseListener(listener);
+                    btnCells[row][col].setText("");       // display blank
+                    mines[row][col] = false;   // clear all the mines
+                    flags[row][col] = false;   // clear all the flags
+                    btnCells[row][col].setIcon(null);
+                }
+            }
+        } else if (topPanel.getBackground() == Color.magenta) {     // Pink theme
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < columns; col++) {
+                    btnCells[row][col].setEnabled(true);  // enable button
+                    btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
+                    btnCells[row][col].setBackground(Color.pink);
+                    btnCells[row][col].setFont(FONT_NUMBERS);
+                    btnCells[row][col].addMouseListener(listener);
+                    btnCells[row][col].setText("");       // display blank
+                    mines[row][col] = false;   // clear all the mines
+                    flags[row][col] = false;   // clear all the flags
+                    btnCells[row][col].setIcon(null);
+                }
+            }
+        } else {
+            for (int row = 0; row < rows; row++) {                  // Light theme
                 for (int col = 0; col < columns; col++) {
                     btnCells[row][col].setEnabled(true);  // enable button
                     btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
@@ -278,10 +321,13 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         final JMenuItem miNew = new JMenuItem("New (rows:9, columns:9, mines:10)");
         final JMenuItem miBeg = new JMenuItem("Beginner (rows:9, columns:9, mines:10)");
         final JMenuItem miInter = new JMenuItem("Intermediate (rows:16, columns:16, mines:40)");
-        final JMenuItem miExp = new JMenuItem("Expert (rows:16, columns:30, mines:90)");
+        final JMenuItem miExp = new JMenuItem("Expert (rows:16, columns:30, mines:99)");
         final JMenuItem miExit = new JMenuItem("Exit");
         final JMenuItem themeLight = new JMenuItem("Light Theme");
         final JMenuItem themeDark = new JMenuItem("Dark Theme");
+        final JMenuItem themeBlue = new JMenuItem("Blue Theme");
+        final JMenuItem themeGreen = new JMenuItem("Green Theme");
+        final JMenuItem themePink = new JMenuItem("Pink Theme");
         final JMenuItem about = new JMenuItem("About MineSweeper....");
         final JMenuItem instr = new JMenuItem("Instructions");
         final JMenuItem tips = new JMenuItem("Tips");
@@ -293,6 +339,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         game.add(miExit);
         theme.add(themeLight);
         theme.add(themeDark);
+        theme.add(themeBlue);
+        theme.add(themeGreen);
+        theme.add(themePink);
         help.add(about);
         help.add(instr);
         help.add(tips);
@@ -300,14 +349,10 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
                 clearGame();
-                screen.setPreferredSize(new Dimension(600, 600));
-                screen.setResizable(false);
                 gameDifficulty = new GameDifficulty(Level.BEGINNER);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
             }
             if (miBeg == ae.getSource()) {
-                screen.setPreferredSize(new Dimension(600, 600));
-                screen.setResizable(false);
                 clearGame();
                 gameDifficulty = new GameDifficulty(Level.BEGINNER);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
@@ -315,16 +360,11 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             }
             if (miInter == ae.getSource()) {
                 clearGame();
-                screen.setPreferredSize(new Dimension(800, 700));
-                screen.setResizable(false);
                 gameDifficulty = new GameDifficulty(Level.MEDIUM);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
             }
             if (miExp == ae.getSource()) {
-                clearGame();
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                screen.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
                 gameDifficulty = new GameDifficulty(Level.HIGH);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
@@ -361,6 +401,42 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 askRestartTheme(changeTheme);
                 System.out.println("Dark theme");
             }
+            if (themeBlue == ae.getSource()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "You will restart the game if you change the theme",
+                        "Change theme",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                String changeTheme = "blue";
+                askRestartTheme(changeTheme);
+
+                System.out.println("Blue theme");
+            }
+            if (themeGreen == ae.getSource()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "You will restart the game if you change the theme",
+                        "Change theme",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                String changeTheme = "green";
+                askRestartTheme(changeTheme);
+
+                System.out.println("Green theme");
+            }
+            if (themePink == ae.getSource()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "You will restart the game if you change the theme",
+                        "Change theme",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                String changeTheme = "pink";
+                askRestartTheme(changeTheme);
+
+                System.out.println("Pink theme");
+            }
 
             if (about == ae.getSource()) {
                 JOptionPane.showMessageDialog(
@@ -370,6 +446,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                         JOptionPane.PLAIN_MESSAGE
                 );
             }
+            
             if (instr == ae.getSource()) {
                 JOptionPane.showMessageDialog(null, "Instructions:\r\n" + "\r\n"
                                 + "· You are presented with a board of squares. Some squares contain mines (bombs), others don't. \r\n"
@@ -381,6 +458,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                         "Instructions", JOptionPane.INFORMATION_MESSAGE
                 );
             }
+            
             if (tips == ae.getSource()) {
                 JOptionPane.showMessageDialog(null, "Tips: \r\n" + "\r\n"
                                 + "· Try opening the four corners of the board first when you start. \r\n"
@@ -400,6 +478,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         miExit.addActionListener(MENULSTNR);
         themeLight.addActionListener(MENULSTNR);
         themeDark.addActionListener(MENULSTNR);
+        themeBlue.addActionListener(MENULSTNR);
+        themeGreen.addActionListener(MENULSTNR);
+        themePink.addActionListener(MENULSTNR);
         about.addActionListener(MENULSTNR);
         instr.addActionListener(MENULSTNR);
         tips.addActionListener(MENULSTNR);
@@ -421,20 +502,36 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             return;
         } else {
             if (changeTheme.equals("black")) {
-                topPanel.setBackground(Color.black);
+                topPanel.setBackground(Color.black);        // Black theme
                 int rows = gameDifficulty.getRow();
                 int columns = gameDifficulty.getColumns();
                 int mineCount = gameDifficulty.getMineCount();
                 initGame(rows, columns, mineCount);
-            } else {
-                topPanel.setBackground(Color.white);
+            } else if (changeTheme.equals("blue")) { 
+                topPanel.setBackground(Color.blue);         // Blue theme
+                int rows = gameDifficulty.getRow();
+                int columns = gameDifficulty.getColumns();
+                int mineCount = gameDifficulty.getMineCount();
+                initGame(rows, columns, mineCount);
+            } else if (changeTheme.equals("green")) { 
+                topPanel.setBackground(Color.green);        // Green theme
+                int rows = gameDifficulty.getRow();
+                int columns = gameDifficulty.getColumns();
+                int mineCount = gameDifficulty.getMineCount();
+                initGame(rows, columns, mineCount);
+            } else if (changeTheme.equals("pink")) { 
+                topPanel.setBackground(Color.magenta);         // Pink theme
+                int rows = gameDifficulty.getRow();
+                int columns = gameDifficulty.getColumns();
+                int mineCount = gameDifficulty.getMineCount();
+                initGame(rows, columns, mineCount);
+            } else {    
+                topPanel.setBackground(Color.white);        // Light theme
                 int rows = gameDifficulty.getRow();
                 int columns = gameDifficulty.getColumns();
                 int mineCount = gameDifficulty.getMineCount();
                 initGame(rows, columns, mineCount);
             }
-
-
         }
     }
 
@@ -485,7 +582,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                                 btnCells[row][col].setForeground(FGCOLOR_REVEALED);
                                 btnCells[row][col].setBackground(BGCOLOR_REVEALED);
                                 btnCells[row][col].setIcon(boomImageIcon);
-                                restartButton.setIcon(deadImageIcon);
                                 System.out.println(btnCells[row][col].getSize());
 //                                btnCells[row][col].setText("Boom");
                             }
@@ -632,7 +728,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
     //Click on smiley button to reset the game
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == restartButton) {
+        if (ae.getSource() == smiley) {
             int rows = gameDifficulty.getRow();
             int columns = gameDifficulty.getColumns();
             int numMines = gameDifficulty.getMineCount();
