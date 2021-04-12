@@ -35,6 +35,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     ImageIcon smileyImageIcon = mineSweeperImages.getImage("smiley");
     ImageIcon boomImageIcon = mineSweeperImages.getImage("boom");
     ImageIcon flagImageIcon = mineSweeperImages.getImage("flag");
+    ImageIcon num1ImageIcon = mineSweeperImages.getImage("num1");
+    ImageIcon num2ImageIcon = mineSweeperImages.getImage("num2");
+    ImageIcon num3ImageIcon = mineSweeperImages.getImage("num3");
 
     // Name-constants for the game properties
 //    public int rows = 10;
@@ -46,10 +49,11 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     public static final int CELL_SIZE = 60;  // Cell width and height, in pixels
     //    public static final int CANVAS_WIDTH = CELL_SIZE * COLS; // Game board width/height
 //    public static final int CANVAS_HEIGHT = CELL_SIZE * ROWS;
-    public static final Color BGCOLOR_NOT_REVEALED = Color.GREEN;
+//    public static final Color BGCOLOR_NOT_REVEALED = Color.GREEN;
     public static final Color FGCOLOR_NOT_REVEALED = Color.RED;    // flag
     public static final Color BGCOLOR_REVEALED = Color.DARK_GRAY;
     public static final Color FGCOLOR_REVEALED = Color.LIGHT_GRAY; // number of mines
+    public static final Color BUTTON_REVEALED = new Color(200, 200, 250);
     public static final Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 20);
 
     // Buttons for user interaction
@@ -468,8 +472,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     for (int row = 0; row < rows; ++row) {
                         for (int col = 0; col < columns; ++col) {
                             if (mines[row][col]) {
-                                btnCells[row][col].setForeground(FGCOLOR_REVEALED);
-                                btnCells[row][col].setBackground(BGCOLOR_REVEALED);
+//                                btnCells[row][col].setForeground(FGCOLOR_REVEALED);
+//                                btnCells[row][col].setBackground(BGCOLOR_REVEALED);
                                 btnCells[row][col].setIcon(boomImageIcon);
                                 System.out.println(btnCells[row][col].getSize());
 //                                btnCells[row][col].setText("Boom");
@@ -492,7 +496,16 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     } else {
                         btnCells[rowSelected][colSelected].setForeground(FGCOLOR_REVEALED);
                         btnCells[rowSelected][colSelected].setBackground(BGCOLOR_REVEALED);
-                        btnCells[rowSelected][colSelected].setText(String.valueOf(surroundingMineNum));
+                        if (surroundingMineNum == 1) {
+                            btnCells[rowSelected][colSelected].setIcon(num1ImageIcon);
+                        } else if (surroundingMineNum == 2) {
+                            btnCells[rowSelected][colSelected].setIcon(num2ImageIcon);
+                        } else {
+                            btnCells[rowSelected][colSelected].setIcon(num3ImageIcon);
+                        }
+//                        btnCells[rowSelected][colSelected].setText(String.valueOf(surroundingMineNum));
+                        System.out.println("Below surroundMineNum");
+                        System.out.println(String.valueOf(surroundingMineNum));
                         btnCells[rowSelected][colSelected].removeMouseListener(this);
                         btnCells[rowSelected][colSelected].setEnabled(false);
                         numRevealed++;
