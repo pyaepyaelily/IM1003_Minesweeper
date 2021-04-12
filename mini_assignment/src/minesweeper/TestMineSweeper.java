@@ -33,12 +33,14 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     private JPanel buttonPanel = new JPanel();
     private JPanel topPanel = new JPanel();
     private JButton smiley = new JButton("");
-    ImageIcon smileyImageIcon = null;
-    ImageIcon boomImageIcon = null;
-    ImageIcon flagImageIcon = null;
+
 
     private GameDifficulty gameDifficulty = new GameDifficulty(Level.BEGINNER);
+    private MineSweeperImage mineSweeperImages = mineSweeperImages = new MineSweeperImage();
 
+    ImageIcon smileyImageIcon = mineSweeperImages.getImage("smiley");
+    ImageIcon boomImageIcon = mineSweeperImages.getImage("boom");
+    ImageIcon flagImageIcon = mineSweeperImages.getImage("flag");
 
     // Name-constants for the game properties
 //    public int rows = 10;
@@ -76,15 +78,13 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         final int columns = gameDifficulty.getColumns();
         final int mineCount = gameDifficulty.getMineCount();
 
+
         btnCells = new JButton[rows][columns];
         mines = new boolean[rows][columns];
         flags = new boolean[rows][columns];
 
         screen = new JFrame();
-
-//        screen.setIconImage(boomImageIcon.getImage());
-        screen.setIconImage(mineSweeperImages("boom").getImage());
-
+        screen.setIconImage(boomImageIcon.getImage());
         screen.setJMenuBar(createMenuBar());
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
         screen.setTitle("TestFrame");
@@ -94,16 +94,15 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         //button to put in topPanel
         smiley.setPreferredSize(new Dimension(25, 25));
-        smiley.setIcon(mineSweeperImages("smiley"));
-
-        topPanel.setLayout(new BorderLayout());
-        topPanel.add(smiley, BorderLayout.CENTER);
-
-//        topPanel.setSize(25,25);
-//        topPanel.addComponentListener(new ResizeListener());
+        smiley.setIcon(smileyImageIcon);
         smiley.addActionListener(this);
         smiley.addMouseListener(this);
 
+        //Need to change this
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(smiley, BorderLayout.CENTER);
+//        topPanel.setSize(25,25);
+//        topPanel.addComponentListener(new ResizeListener());
 
 //        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
 //        contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
@@ -184,24 +183,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             System.out.println(e.getComponent().getSize());
             System.out.println("resize");
         }
-    }
-
-    public ImageIcon mineSweeperImages(String choice) {
-        switch (choice) {
-            case "smiley" -> {
-                smileyImageIcon = getScaledImage("mini_assignment/images/smiley.png");
-                return smileyImageIcon;
-            }
-            case "boom" -> {
-                boomImageIcon = getScaledImage("mini_assignment/images/boom.png");
-                return boomImageIcon;
-            }
-            case "flag" -> {
-                flagImageIcon = getScaledImage("mini_assignment/images/flag.png");
-                return flagImageIcon;
-            }
-        }
-        return null;
     }
 
     public static void main(String[] args) {
@@ -329,6 +310,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             int columns = gameDifficulty.getColumns();
             int numMines = gameDifficulty.getMineCount();
 
+
             rowloop:
             for (int row = 0; row < rows; ++row) {
                 for (int col = 0; col < columns; ++col) {
@@ -358,7 +340,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                             if (mines[row][col]) {
                                 btnCells[row][col].setForeground(FGCOLOR_REVEALED);
                                 btnCells[row][col].setBackground(BGCOLOR_REVEALED);
-                                btnCells[row][col].setIcon(mineSweeperImages("boom"));
+                                btnCells[row][col].setIcon(boomImageIcon);
 //                                btnCells[row][col].setText("Boom");
                             }
                             btnCells[row][col].removeMouseListener(this);
@@ -394,7 +376,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 //                    btnCells[rowSelected][colSelected].setText("");
                     flags[rowSelected][colSelected] = false;
                 } else {
-                    btnCells[rowSelected][colSelected].setIcon(mineSweeperImages("flag"));
+                    btnCells[rowSelected][colSelected].setIcon(flagImageIcon);
 //                    btnCells[rowSelected][colSelected].setText("flag");
                     flags[rowSelected][colSelected] = true;
                 }
@@ -492,13 +474,5 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             int numMines = gameDifficulty.getMineCount();
             initGame(rows, columns, numMines);
         }
-    }
-
-    public ImageIcon getScaledImage(String imageString) {
-        ImageIcon imageIcon = new ImageIcon(imageString);
-        Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
-        imageIcon = new ImageIcon(newimg);
-        return imageIcon;
     }
 }
