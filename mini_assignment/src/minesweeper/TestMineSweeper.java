@@ -258,6 +258,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         final JMenuItem themeLight = new JMenuItem("Light Theme");
         final JMenuItem themeDark = new JMenuItem("Dark Theme");
         final JMenuItem about = new JMenuItem("About MineSweeper....");
+        final JMenuItem instr = new JMenuItem("Instructions");
 
         game.add(miNew);
         game.add(miBeg);
@@ -267,6 +268,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         theme.add(themeLight);
         theme.add(themeDark);
         help.add(about);
+        help.add(instr)
 
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
@@ -287,6 +289,17 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 gameDifficulty = new GameDifficulty(Level.HIGH);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
+            }
+            if (instr == ae.getSource()) { 
+				JOptionPane.showMessageDialog(null, "Instructions:\r\n" + "\r\n"
+						+ "· You are presented with a board of squares. Some squares contain mines (bombs), others don't. \r\n"
+						+ "· Your goal is to clear the board of squares without triggering any bombs. \r\n"
+						+ "· To open a square, point your cursor at the square and click on it. \r\n"
+						+ "· If you manage to click all the squares (without clicking on any bombs), you win.  \r\n"
+						+ "· If you click on any single square containing a bomb, you lose. So be careful! \r\n" + "\r\n"
+						+ "· Have Fun!", 
+						"Instructions", JOptionPane.PLAIN_MESSAGE
+						);
             }
             if (miExit == ae.getSource()) {
                 if (screen != null) {
@@ -338,6 +351,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         themeLight.addActionListener(MENULSTNR);
         themeDark.addActionListener(MENULSTNR);
         about.addActionListener(MENULSTNR);
+        instr.addActionListener(MENULSTNR);
         mBar.add(game);
         mBar.add(theme);
         mBar.add(help);
