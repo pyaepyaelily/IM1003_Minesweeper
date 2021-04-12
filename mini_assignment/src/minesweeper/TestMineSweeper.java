@@ -83,13 +83,17 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         mines = new boolean[rows][columns];
         flags = new boolean[rows][columns];
 
+        System.out.println(rows);
+        System.out.println(columns);
+        System.out.println(mineCount);
+
         screen = new JFrame();
         screen.setIconImage(boomImageIcon.getImage());
         screen.setJMenuBar(createMenuBar());
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
         screen.setTitle("TestFrame");
         screen.setVisible(true);   // show it
-        screen.setPreferredSize(new Dimension(600, 600));
+//        screen.setPreferredSize(new Dimension(600, 600));
         screen.setResizable(false);
 
 
@@ -137,9 +141,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         CellMouseListener listener = new CellMouseListener();
         numRevealed = 0;
 
-        System.out.println(rows);
-        System.out.println(columns);
-        System.out.println(numMines);
+//        System.out.println(rows);
+//        System.out.println(columns);
+//        System.out.println(numMines);
 
         if (topPanel.getBackground() == Color.black) {
             for (int row = 0; row < rows; row++) {
@@ -191,15 +195,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 col = rand.nextInt(columns);
             } while (mines[row][col]);
             mines[row][col] = true;
-        }
-    }
-
-    class ResizeListener extends ComponentAdapter {
-        public void componentResized(ComponentEvent e) {
-            // Recalculate the variable you mentioned
-//            e.getComponent().setSize(25,25);
-            System.out.println(e.getComponent().getSize());
-            System.out.println("resize");
         }
     }
 
@@ -333,14 +328,14 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                         JOptionPane.PLAIN_MESSAGE
                 );
             }
-	    if (instr == ae.getSource()) { 
+	    if (instr == ae.getSource()) {
 			JOptionPane.showMessageDialog(null, "Instructions:\r\n" + "\r\n"
 				+ "· You are presented with a board of squares. Some squares contain mines (bombs), others don't. \r\n"
 				+ "· Your goal is to clear the board of squares without triggering any bombs. \r\n"
 				+ "· To open a square, point your cursor at the square and click on it. \r\n"
 				+ "· If you manage to click all the squares (without clicking on any bombs), you win.  \r\n"
 				+ "· If you click on any single square containing a bomb, you lose. So be careful! \r\n" + "\r\n"
-				+ "· Have Fun!", 
+				+ "· Have Fun!",
 				"Instructions", JOptionPane.INFORMATION_MESSAGE
 				);
             }
@@ -353,7 +348,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             			"Tips", JOptionPane.PLAIN_MESSAGE
             	);
             }
-		
+
         };
 
         miNew.addActionListener(MENULSTNR);
@@ -509,7 +504,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         /**
          * *
-         * recursive method to open all the blank location of the mines 
+         * recursive method to open all the blank location of the mines
          * the algorithm is called flood filled
          *
          * @param row
