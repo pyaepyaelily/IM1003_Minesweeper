@@ -472,8 +472,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     for (int row = 0; row < rows; ++row) {
                         for (int col = 0; col < columns; ++col) {
                             if (mines[row][col]) {
-//                                btnCells[row][col].setForeground(FGCOLOR_REVEALED);
-//                                btnCells[row][col].setBackground(BGCOLOR_REVEALED);
+                                btnCells[row][col].setForeground(FGCOLOR_REVEALED);
+                                btnCells[row][col].setBackground(BGCOLOR_REVEALED);
                                 btnCells[row][col].setIcon(boomImageIcon);
                                 System.out.println(btnCells[row][col].getSize());
 //                                btnCells[row][col].setText("Boom");
@@ -493,17 +493,27 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     if (surroundingMineNum == 0) {
                         // A recursive method to find all empty spots
                         revealBlanks(rowSelected, colSelected);
+//                    } else if (surroundingMineNum == 1) {
+//                        btnCells[rowSelected][colSelected].setIcon(num1ImageIcon);
+//                        btnCells[rowSelected][colSelected].removeMouseListener(this);
+//                        btnCells[rowSelected][colSelected].setEnabled(false);
+//                        numRevealed++;
+//                    } else if (surroundingMineNum == 2) {
+//                        btnCells[rowSelected][colSelected].setIcon(num2ImageIcon);
+//                        btnCells[rowSelected][colSelected].removeMouseListener(this);
+//                        btnCells[rowSelected][colSelected].setEnabled(false);
+//                        numRevealed++;
                     } else {
                         btnCells[rowSelected][colSelected].setForeground(FGCOLOR_REVEALED);
                         btnCells[rowSelected][colSelected].setBackground(BGCOLOR_REVEALED);
-                        if (surroundingMineNum == 1) {
-                            btnCells[rowSelected][colSelected].setIcon(num1ImageIcon);
-                        } else if (surroundingMineNum == 2) {
-                            btnCells[rowSelected][colSelected].setIcon(num2ImageIcon);
-                        } else {
-                            btnCells[rowSelected][colSelected].setIcon(num3ImageIcon);
-                        }
-//                        btnCells[rowSelected][colSelected].setText(String.valueOf(surroundingMineNum));
+//                        if (surroundingMineNum == 1) {
+//                            btnCells[rowSelected][colSelected].setIcon(num1ImageIcon);
+//                        } else if (surroundingMineNum == 2) {
+//                            btnCells[rowSelected][colSelected].setIcon(num2ImageIcon);
+//                        } else {
+//                            btnCells[rowSelected][colSelected].setIcon(num3ImageIcon);
+//                        }
+                        btnCells[rowSelected][colSelected].setText(String.valueOf(surroundingMineNum));
                         System.out.println("Below surroundMineNum");
                         System.out.println(String.valueOf(surroundingMineNum));
                         btnCells[rowSelected][colSelected].removeMouseListener(this);
