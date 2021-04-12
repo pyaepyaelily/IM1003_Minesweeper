@@ -72,11 +72,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         final int columns = gameDifficulty.getColumns();
         final int mineCount = gameDifficulty.getMineCount();
 
-
-        btnCells = new JButton[rows][columns];
-        mines = new boolean[rows][columns];
-        flags = new boolean[rows][columns];
-
         System.out.println(rows);
         System.out.println(columns);
         System.out.println(mineCount);
@@ -110,13 +105,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         contentPanel.setPreferredSize(new Dimension(rows * rows, 500));
         buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
-                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
-//                btnCells[row][col].setSize(new Dimension(57, 37));
-                buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
-            }
-        }
 
         contentPanel.add(buttonPanel);
 
@@ -125,7 +113,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         screen.pack();
 
         // Initialize for a new game
-        clearGame();
         initGame(rows, columns, mineCount);
     }
 
@@ -174,6 +161,37 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
     // Initialize and re-initialize a new game
     private void initGame(int rows, int columns, int numMines) {
+        btnCells = new JButton[rows][columns];
+        mines = new boolean[rows][columns];
+        flags = new boolean[rows][columns];
+
+        contentPanel.remove(buttonPanel);
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
+                buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
+            }
+        }
+        contentPanel.add(buttonPanel);
+        screen.pack();
+
+        CellMouseListener listener = new CellMouseListener();
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                btnCells[row][col].setEnabled(true);  // enable button
+                btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
+                btnCells[row][col].setBackground(Color.white);
+                btnCells[row][col].setFont(FONT_NUMBERS);
+                btnCells[row][col].addMouseListener(listener);
+                btnCells[row][col].setText("");       // display blank
+                mines[row][col] = false;   // clear all the mines
+                flags[row][col] = false;   // clear all the flags
+                btnCells[row][col].setIcon(null);
+            }
+        }
 
         Random rand = new Random();
         // Set the number of mines and the mines' location
@@ -187,6 +205,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             mines[row][col] = true;
         }
     }
+
 
     public static void main(String[] args) {
         try {
@@ -259,10 +278,12 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
+                clearGame();
                 gameDifficulty = new GameDifficulty(Level.BEGINNER);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
             }
             if (miBeg == ae.getSource()) {
+                clearGame();
                 gameDifficulty = new GameDifficulty(Level.BEGINNER);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
