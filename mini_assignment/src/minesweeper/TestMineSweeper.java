@@ -268,7 +268,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         theme.add(themeLight);
         theme.add(themeDark);
         help.add(about);
-        help.add(instr)
+        help.add(instr);
 
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
