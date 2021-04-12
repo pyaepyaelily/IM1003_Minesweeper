@@ -178,20 +178,36 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         screen.pack();
 
         CellMouseListener listener = new CellMouseListener();
-
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
-                btnCells[row][col].setEnabled(true);  // enable button
-                btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
-                btnCells[row][col].setBackground(Color.white);
-                btnCells[row][col].setFont(FONT_NUMBERS);
-                btnCells[row][col].addMouseListener(listener);
-                btnCells[row][col].setText("");       // display blank
-                mines[row][col] = false;   // clear all the mines
-                flags[row][col] = false;   // clear all the flags
-                btnCells[row][col].setIcon(null);
+        if (topPanel.getBackground() == Color.black) {
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < columns; col++) {
+                    btnCells[row][col].setEnabled(true);  // enable button
+                    btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
+                    btnCells[row][col].setBackground(Color.black);
+                    btnCells[row][col].setFont(FONT_NUMBERS);
+                    btnCells[row][col].addMouseListener(listener);
+                    btnCells[row][col].setText("");       // display blank
+                    mines[row][col] = false;   // clear all the mines
+                    flags[row][col] = false;   // clear all the flags
+                    btnCells[row][col].setIcon(null);
+                }
+            }
+        } else {
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < columns; col++) {
+                    btnCells[row][col].setEnabled(true);  // enable button
+                    btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
+                    btnCells[row][col].setBackground(Color.white);
+                    btnCells[row][col].setFont(FONT_NUMBERS);
+                    btnCells[row][col].addMouseListener(listener);
+                    btnCells[row][col].setText("");       // display blank
+                    mines[row][col] = false;   // clear all the mines
+                    flags[row][col] = false;   // clear all the flags
+                    btnCells[row][col].setIcon(null);
+                }
             }
         }
+
 
         Random rand = new Random();
         // Set the number of mines and the mines' location
