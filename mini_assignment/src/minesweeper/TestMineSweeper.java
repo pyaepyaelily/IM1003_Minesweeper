@@ -26,7 +26,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     private JPanel contentPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
     private JPanel topPanel = new JPanel();
-    private JButton smiley = new JButton("");
+    private JButton restartButton = new JButton("");
 
 
     private GameDifficulty gameDifficulty = new GameDifficulty(Level.BEGINNER);
@@ -38,6 +38,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     ImageIcon num1ImageIcon = mineSweeperImages.getImage("num1");
     ImageIcon num2ImageIcon = mineSweeperImages.getImage("num2");
     ImageIcon num3ImageIcon = mineSweeperImages.getImage("num3");
+    ImageIcon deadImageIcon = mineSweeperImages.getImage("dead");
 
     // Name-constants for the game properties
 //    public int rows = 10;
@@ -87,18 +88,18 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         screen.setTitle("TestFrame");
         screen.setVisible(true);   // show it
         screen.setPreferredSize(new Dimension(600, 600));
-//        screen.setResizable(false);
+        screen.setResizable(false);
 
 
         //button to put in topPanel
-        smiley.setPreferredSize(new Dimension(25, 25));
-        smiley.setIcon(smileyImageIcon);
-        smiley.addActionListener(this);
-        smiley.addMouseListener(this);
+        restartButton.setPreferredSize(new Dimension(25, 25));
+        restartButton.setIcon(smileyImageIcon);
+        restartButton.addActionListener(this);
+        restartButton.addMouseListener(this);
 
         //Need to change this
 //        topPanel.setLayout(new BorderLayout());
-        topPanel.add(smiley, BorderLayout.CENTER);
+        topPanel.add(restartButton, BorderLayout.CENTER);
         topPanel.setPreferredSize(new Dimension(35, 35));
 //        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
 //        contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
@@ -107,7 +108,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         contentPanel.setPreferredSize(new Dimension(rows * rows, 500));
-        buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
+        buttonPanel.setLayout(new GridLayout(rows, columns));
 
 
         contentPanel.add(buttonPanel);
@@ -127,7 +128,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         CellMouseListener listener = new CellMouseListener();
         numRevealed = 0;
-
+        restartButton.setIcon(smileyImageIcon);
         if (topPanel.getBackground() == Color.black) {
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < columns; col++) {
@@ -171,7 +172,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         contentPanel.remove(buttonPanel);
         buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
+        buttonPanel.setLayout(new GridLayout(rows, columns));
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 btnCells[row][col] = new JButton();  // Allocate each JButton of the array
@@ -274,10 +275,10 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         JMenu help = new JMenu("Help");
 
 
-        final JMenuItem miNew = new JMenuItem("New (rows:10, columns:10, mines:10)");
-        final JMenuItem miBeg = new JMenuItem("Beginner (rows:10, columns:10, mines:10)");
-        final JMenuItem miInter = new JMenuItem("Intermediate (rows:20, columns:20, mines:20)");
-        final JMenuItem miExp = new JMenuItem("Expert (rows:30, columns:30, mines:30)");
+        final JMenuItem miNew = new JMenuItem("New (rows:9, columns:9, mines:10)");
+        final JMenuItem miBeg = new JMenuItem("Beginner (rows:9, columns:9, mines:10)");
+        final JMenuItem miInter = new JMenuItem("Intermediate (rows:16, columns:16, mines:40)");
+        final JMenuItem miExp = new JMenuItem("Expert (rows:16, columns:30, mines:90)");
         final JMenuItem miExit = new JMenuItem("Exit");
         final JMenuItem themeLight = new JMenuItem("Light Theme");
         final JMenuItem themeDark = new JMenuItem("Dark Theme");
@@ -299,10 +300,14 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
                 clearGame();
+                screen.setPreferredSize(new Dimension(600, 600));
+                screen.setResizable(false);
                 gameDifficulty = new GameDifficulty(Level.BEGINNER);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
             }
             if (miBeg == ae.getSource()) {
+                screen.setPreferredSize(new Dimension(600, 600));
+                screen.setResizable(false);
                 clearGame();
                 gameDifficulty = new GameDifficulty(Level.BEGINNER);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
@@ -310,11 +315,16 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             }
             if (miInter == ae.getSource()) {
                 clearGame();
+                screen.setPreferredSize(new Dimension(800, 700));
+                screen.setResizable(false);
                 gameDifficulty = new GameDifficulty(Level.MEDIUM);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
             }
             if (miExp == ae.getSource()) {
+                clearGame();
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                screen.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
                 gameDifficulty = new GameDifficulty(Level.HIGH);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
@@ -475,6 +485,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                                 btnCells[row][col].setForeground(FGCOLOR_REVEALED);
                                 btnCells[row][col].setBackground(BGCOLOR_REVEALED);
                                 btnCells[row][col].setIcon(boomImageIcon);
+                                restartButton.setIcon(deadImageIcon);
                                 System.out.println(btnCells[row][col].getSize());
 //                                btnCells[row][col].setText("Boom");
                             }
@@ -621,7 +632,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
     //Click on smiley button to reset the game
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == smiley) {
+        if (ae.getSource() == restartButton) {
             int rows = gameDifficulty.getRow();
             int columns = gameDifficulty.getColumns();
             int numMines = gameDifficulty.getMineCount();

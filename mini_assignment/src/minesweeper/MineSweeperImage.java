@@ -4,12 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MineSweeperImage {
-    private ImageIcon smileyImageIcon ;
+    private ImageIcon smileyImageIcon;
     private ImageIcon boomImageIcon;
     private ImageIcon flagImageIcon;
     private ImageIcon num1ImageIcon;
     private ImageIcon num2ImageIcon;
     private ImageIcon num3ImageIcon;
+    private ImageIcon deadImageIcon;
 
     public ImageIcon getImage(String choice) {
         switch (choice) {
@@ -30,16 +31,21 @@ public class MineSweeperImage {
                 return num1ImageIcon;
             }
             case "num2" -> {
-                num1ImageIcon = getScaledImage("mini_assignment/images/2.png");
+                num2ImageIcon = getScaledImage("mini_assignment/images/2.png");
                 return num2ImageIcon;
             }
             case "num3" -> {
-                num1ImageIcon = getScaledImage("mini_assignment/images/3.png");
+                num3ImageIcon = getScaledImage("mini_assignment/images/3.png");
                 return num3ImageIcon;
+            }
+            case "dead" -> {
+                deadImageIcon = getScaledImage("mini_assignment/images/dead.png");
+                return deadImageIcon;
             }
         }
         return null;
     }
+
     public ImageIcon getScaledImage(String imageString) {
         ImageIcon imageIcon = new ImageIcon(imageString);
         Image image = imageIcon.getImage();
