@@ -89,7 +89,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // handle window-close button
         screen.setTitle("TestFrame");
         screen.setVisible(true);   // show it
-//        screen.setResizable(false);
+        screen.setPreferredSize(new Dimension(600, 600));
+        screen.setResizable(false);
 
 
         //button to put in topPanel
@@ -101,28 +102,27 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         //Need to change this
 //        topPanel.setLayout(new BorderLayout());
         topPanel.add(smiley, BorderLayout.CENTER);
-//        topPanel.setSize(25,25);
-//        topPanel.addComponentListener(new ResizeListener());
-
+        topPanel.setPreferredSize(new Dimension(600, 35));
 //        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
 //        contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
+        contentPanel.setBackground(Color.BLUE);
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
-
+        contentPanel.setPreferredSize(new Dimension(rows * rows, 500));
         buttonPanel.setLayout(new GridLayout(rows, columns, 1, 1));
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 btnCells[row][col] = new JButton();  // Allocate each JButton of the array
-                btnCells[row][col].setSize(new Dimension(30, 30));
+//                btnCells[row][col].setSize(new Dimension(57, 37));
                 buttonPanel.add(btnCells[row][col]);          // add to content-pane in GridLayout
             }
         }
 
         contentPanel.add(buttonPanel);
 
-        screen.add(topPanel, BorderLayout.CENTER);
+        screen.add(topPanel, BorderLayout.NORTH);
         screen.add(contentPanel, BorderLayout.SOUTH);
         screen.pack();
 
@@ -420,6 +420,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                                 btnCells[row][col].setForeground(FGCOLOR_REVEALED);
                                 btnCells[row][col].setBackground(BGCOLOR_REVEALED);
                                 btnCells[row][col].setIcon(boomImageIcon);
+                                System.out.println(btnCells[row][col].getSize());
 //                                btnCells[row][col].setText("Boom");
                             }
                             btnCells[row][col].removeMouseListener(this);
