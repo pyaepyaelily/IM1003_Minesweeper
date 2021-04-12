@@ -246,7 +246,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         JMenuBar mBar = new JMenuBar();
         JMenu game = new JMenu("Game");
-        JMenu theme = new JMenu("Theme");
+        JMenu theme = new JMenu("Themes");
         JMenu help = new JMenu("Help");
 
 
@@ -258,6 +258,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         final JMenuItem themeLight = new JMenuItem("Light Theme");
         final JMenuItem themeDark = new JMenuItem("Dark Theme");
         final JMenuItem about = new JMenuItem("About MineSweeper....");
+        final JMenuItem instr = new JMenuItem("Instructions");
+	final JMenuItem tips = new JMenuItem("Tips");
 
         game.add(miNew);
         game.add(miBeg);
@@ -267,6 +269,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         theme.add(themeLight);
         theme.add(themeDark);
         help.add(about);
+        help.add(instr);
+	help.add(tips);
 
         ActionListener MENULSTNR = ae -> {
             if (miNew == ae.getSource()) {
@@ -288,6 +292,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
             }
+
             if (miExit == ae.getSource()) {
                 if (screen != null) {
                     screen.dispose();
@@ -328,6 +333,27 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                         JOptionPane.PLAIN_MESSAGE
                 );
             }
+	    if (instr == ae.getSource()) { 
+			JOptionPane.showMessageDialog(null, "Instructions:\r\n" + "\r\n"
+				+ "· You are presented with a board of squares. Some squares contain mines (bombs), others don't. \r\n"
+				+ "· Your goal is to clear the board of squares without triggering any bombs. \r\n"
+				+ "· To open a square, point your cursor at the square and click on it. \r\n"
+				+ "· If you manage to click all the squares (without clicking on any bombs), you win.  \r\n"
+				+ "· If you click on any single square containing a bomb, you lose. So be careful! \r\n" + "\r\n"
+				+ "· Have Fun!", 
+				"Instructions", JOptionPane.INFORMATION_MESSAGE
+				);
+            }
+	    if (tips == ae.getSource()) {
+            	JOptionPane.showMessageDialog(null, "Tips: \r\n" + "\r\n"
+            			+ "· Try opening the four corners of the board first when you start. \r\n"
+            			+ "· Next, try opening any square in the middle. \r\n"
+            			+ "· Mark all the mines that are obvious using flags. For example: eight 1's surrounding an unopened square. \r\n" + "\r\n"
+            			+ " · Good Luck!",
+            			"Tips", JOptionPane.PLAIN_MESSAGE
+            	);
+            }
+		
         };
 
         miNew.addActionListener(MENULSTNR);
@@ -338,6 +364,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         themeLight.addActionListener(MENULSTNR);
         themeDark.addActionListener(MENULSTNR);
         about.addActionListener(MENULSTNR);
+        instr.addActionListener(MENULSTNR);
+	tips.addActionListener(MENULSTNR);
         mBar.add(game);
         mBar.add(theme);
         mBar.add(help);
@@ -347,7 +375,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     public void askRestartTheme(String changeTheme) {
         int confirmation = JOptionPane.showConfirmDialog(
                 null,
-                "Do you want to change the theme",
+                "Do you want to change the theme?",
                 "Change Theme",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE
@@ -481,8 +509,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
         /**
          * *
-         * recursive method to open all the blank location of the mines the
-         * algorithm is called flood filled
+         * recursive method to open all the blank location of the mines 
+         * the algorithm is called flood filled
          *
          * @param row
          * @param col
@@ -521,7 +549,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             revealBlanks(row, col + 1);
         }
 
-        // this is calculate the surrounding mine number
+        // this is to calculate the surrounding mine number
         private int calculateMineNumber(int row, int col) {
             int rows = gameDifficulty.getRow();
             int columns = gameDifficulty.getColumns();
