@@ -49,7 +49,7 @@ public class MineSweeperImage {
     public ImageIcon getScaledImage(String imageString) {
         ImageIcon imageIcon = new ImageIcon(imageString);
         Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
+        Image newimg = image.getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH);
         imageIcon = new ImageIcon(newimg);
         return imageIcon;
     }
