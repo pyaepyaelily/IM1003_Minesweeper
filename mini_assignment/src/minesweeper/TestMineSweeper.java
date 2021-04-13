@@ -33,14 +33,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     ImageIcon smileyImageIcon = mineSweeperImages.getImage("smiley");
     ImageIcon boomImageIcon = mineSweeperImages.getImage("boom");
     ImageIcon flagImageIcon = mineSweeperImages.getImage("flag");
-    ImageIcon num1ImageIcon = mineSweeperImages.getImage("num1");
-    ImageIcon num2ImageIcon = mineSweeperImages.getImage("num2");
-    ImageIcon num3ImageIcon = mineSweeperImages.getImage("num3");
     ImageIcon deadImageIcon = mineSweeperImages.getImage("dead");
 
-
     // Name-constants for UI control (sizes, colors and fonts)
-    public static final int CELL_SIZE = 60;  // Cell width and height, in pixels
     public static final Color FGCOLOR_NOT_REVEALED = Color.RED;    // flag
     public static final Color BGCOLOR_REVEALED = Color.DARK_GRAY;
     public static final Color FGCOLOR_REVEALED = Color.LIGHT_GRAY; // number of mines
@@ -49,8 +44,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
     // Buttons for user interaction
     JButton btnCells[][];
-
-    // Number of mines in this game. Can vary to control the difficulty level.
 
     // Location of mines. True if mine is present on this cell.
     boolean mines[][];
@@ -253,7 +246,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             //Print out mine position to check
             System.out.println(row + "," + col); 
         }
-
     }
 
     public static void main(String[] args) {
@@ -495,7 +487,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 initGame(rows, columns, mineCount);
             } else if (changeTheme.equals("blue")) {
                 topPanel.setBackground(Color.blue);            // Blue theme
-
                 int rows = gameDifficulty.getRow();
                 int columns = gameDifficulty.getColumns();
                 int mineCount = gameDifficulty.getMineCount();
