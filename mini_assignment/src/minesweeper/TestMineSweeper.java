@@ -87,17 +87,15 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         restartButton.setIcon(smileyImageIcon);
         restartButton.addActionListener(this);
         restartButton.addMouseListener(this);
-
         topPanel.add(restartButton, BorderLayout.CENTER);
         topPanel.setPreferredSize(new Dimension(35, 35));
 
+        //For buttons
         contentPanel.setBackground(Color.BLUE);
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         contentPanel.setPreferredSize(new Dimension(rows * rows, 500));
         buttonPanel.setLayout(new GridLayout(rows, columns));
-
-
         contentPanel.add(buttonPanel);
 
         screen.add(topPanel, BorderLayout.NORTH);
@@ -553,6 +551,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     if (source == btnCells[row][col]) {
                         rowSelected = row;
                         colSelected = col;
+                        System.out.println("click");
                         // break both inner/outer loops
                         break rowloop;
                     }
@@ -563,6 +562,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             if (e.getButton() == MouseEvent.BUTTON1) {  // Left-button clicked
                 // [TODO 5] If you hit a mine, game over
                 // Otherwise, reveal the cell and display the number of surrounding mines
+
+                //If you select the cell that contains mine, you lose
                 if (mines[rowSelected][colSelected]) {
                     try {
                         InputStream in = new FileInputStream(new File("./boom.wav"));
@@ -577,10 +578,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                                 btnCells[row][col].setForeground(FGCOLOR_REVEALED);
                                 btnCells[row][col].setBackground(BGCOLOR_REVEALED);
                                 btnCells[row][col].setIcon(boomImageIcon);
-                                restartButton.setIcon(deadImageIcon);
-                                System.out.println(btnCells[row][col].getSize());
-//                                btnCells[row][col].setText("Boom");
                             }
+                            restartButton.setIcon(deadImageIcon);
+                            flags[row][col] = false;
                             btnCells[row][col].removeMouseListener(this);
                             btnCells[row][col].setEnabled(false);
                         }// end of inner for loop
@@ -593,22 +593,18 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     );
                 } else {
                     int surroundingMineNum = calculateMineNumber(rowSelected, colSelected);
+                    //If no mines around, revel
+                    btnCells[rowSelected][colSelected].setIcon(null);
                     if (surroundingMineNum == 0) {
                         // A recursive method to find all empty spots
                         revealBlanks(rowSelected, colSelected);
                     } else {
                         btnCells[rowSelected][colSelected].setForeground(FGCOLOR_REVEALED);
                         btnCells[rowSelected][colSelected].setBackground(BGCOLOR_REVEALED);
-//                        if (surroundingMineNum == 1) {
-//                            btnCells[rowSelected][colSelected].setIcon(num1ImageIcon);
-//                        } else if (surroundingMineNum == 2) {
-//                            btnCells[rowSelected][colSelected].setIcon(num2ImageIcon);
-//                        } else {
-//                            btnCells[rowSelected][colSelected].setIcon(num3ImageIcon);
-//                        }
+
                         btnCells[rowSelected][colSelected].setText(String.valueOf(surroundingMineNum));
-                        System.out.println("Below surroundMineNum");
-                        System.out.println(String.valueOf(surroundingMineNum));
+                        System.out.println("Below is the surroundMineNum");
+                        System.out.println(surroundingMineNum);
                         btnCells[rowSelected][colSelected].removeMouseListener(this);
                         btnCells[rowSelected][colSelected].setEnabled(false);
                         numRevealed++;
@@ -618,10 +614,12 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             } else if (e.getButton() == MouseEvent.BUTTON3) { // right-button clicked
                 // [TODO 6] If the location is flagged, remove the flag
                 // Otherwise, plant a flag.
+                //Remove flag
                 if (flags[rowSelected][colSelected]) {
+                    System.out.println("remove flag");
                     btnCells[rowSelected][colSelected].setIcon(null);
                     flags[rowSelected][colSelected] = false;
-                } else {
+                } else { //Add flag
                     btnCells[rowSelected][colSelected].setIcon(flagImageIcon);
                     flags[rowSelected][colSelected] = true;
                 }
@@ -656,13 +654,17 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             int rows = gameDifficulty.getRow();
             int columns = gameDifficulty.getColumns();
 
+
+
             if (row < 0 || row >= rows || col < 0 || col >= columns) {
                 return;
             }
             if (btnCells[row][col].getBackground() == BGCOLOR_REVEALED || btnCells[row][col].getForeground() == FGCOLOR_REVEALED) {
+                btnCells[row][col].setIcon(null);
                 return;
             }
             numRevealed++;
+            btnCells[row][col].setIcon(null);
             btnCells[row][col].setForeground(FGCOLOR_REVEALED);
             btnCells[row][col].setBackground(BGCOLOR_REVEALED);
             btnCells[row][col].removeMouseListener(this);
@@ -670,6 +672,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             int surroundingMineNum = calculateMineNumber(row, col);
             if (surroundingMineNum > 0) {
                 btnCells[row][col].setText(String.valueOf(surroundingMineNum));
+
                 return;
             }
             // I apparently cannot do a for-loop to a recursion for the flood fill algorithm
