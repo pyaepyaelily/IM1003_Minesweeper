@@ -244,19 +244,18 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         Random rand = new Random();
         // Set the number of mines and the mines' location
         for (int i = 0; i < numMines; i++) {
-            int row = -1;
-            int col = -1;
+            int row;
+            int col;
             do {
                 row = rand.nextInt(rows);
                 col = rand.nextInt(columns);
             } while (mines[row][col]);
             mines[row][col] = true;
             //Print out mine position to check
-            System.out.println(row + "," + col);
+            System.out.println(row + "," + col); 
         }
 
     }
-
 
     public static void main(String[] args) {
         try {
