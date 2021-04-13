@@ -1,3 +1,8 @@
+/* GameDifficulty class to allow user the ability to choose different game difficulty levels (different board size and corresponding number of mines)
+   Conventionally, classic Minesweeper games have 3 levels of difficulty: Beginner(9*9), Intermediate(16*16) & Hard(16*30)
+*/  
+  
+
 package minesweeper;
 
 enum Level {
@@ -58,24 +63,3 @@ public class GameDifficulty {
         }
         return 10;
     }
-
-//
-//    public Level getLevel() {
-//        return this.level;
-//    }
-//
-//    public void setLevel(Level address) {
-//        this.addres
-
-
-//    public int ExpertRow(){
-//        return 24;
-//    }
-//    public int ExpertCol(){
-//        return 24;
-//    }
-//    public int ExpertMines(){
-//        return 24;
-//    }
-
-}
