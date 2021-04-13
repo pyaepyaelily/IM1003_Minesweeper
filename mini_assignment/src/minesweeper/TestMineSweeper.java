@@ -55,7 +55,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     public static final Color BGCOLOR_REVEALED = Color.DARK_GRAY;
     public static final Color FGCOLOR_REVEALED = Color.LIGHT_GRAY; // number of mines
     public static final Color BUTTON_REVEALED = new Color(200, 200, 250);
-    public static final Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 20);
+    public static final Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 15);
 
     // Buttons for user interaction
     JButton btnCells[][];
@@ -623,14 +623,14 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     } else {
                         btnCells[rowSelected][colSelected].setForeground(FGCOLOR_REVEALED);
                         btnCells[rowSelected][colSelected].setBackground(BGCOLOR_REVEALED);
-                        if (surroundingMineNum == 1) {
-                            btnCells[rowSelected][colSelected].setIcon(num1ImageIcon);
-                        } else if (surroundingMineNum == 2) {
-                            btnCells[rowSelected][colSelected].setIcon(num2ImageIcon);
-                        } else {
-                            btnCells[rowSelected][colSelected].setIcon(num3ImageIcon);
-                        }
-//                        btnCells[rowSelected][colSelected].setText(String.valueOf(surroundingMineNum));
+//                        if (surroundingMineNum == 1) {
+//                            btnCells[rowSelected][colSelected].setIcon(num1ImageIcon);
+//                        } else if (surroundingMineNum == 2) {
+//                            btnCells[rowSelected][colSelected].setIcon(num2ImageIcon);
+//                        } else {
+//                            btnCells[rowSelected][colSelected].setIcon(num3ImageIcon);
+//                        }
+                        btnCells[rowSelected][colSelected].setText(String.valueOf(surroundingMineNum));
                         System.out.println("Below surroundMineNum");
                         System.out.println(String.valueOf(surroundingMineNum));
                         btnCells[rowSelected][colSelected].removeMouseListener(this);
