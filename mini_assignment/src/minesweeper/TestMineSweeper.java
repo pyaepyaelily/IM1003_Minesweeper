@@ -251,7 +251,10 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 col = rand.nextInt(columns);
             } while (mines[row][col]);
             mines[row][col] = true;
+            //Print out mine position to check
+            System.out.println(row + "," + col);
         }
+
     }
 
 
