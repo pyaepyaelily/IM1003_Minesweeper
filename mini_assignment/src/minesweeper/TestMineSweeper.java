@@ -240,7 +240,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 }
             }
         }
-        
+
         Random rand = new Random();
         // Set the number of mines and the mines' location
         for (int i = 0; i < numMines; i++) {
@@ -394,7 +394,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 askRestartTheme(changeTheme);
                 System.out.println("Dark theme");
             }
-            
+
             if (themeBlue == ae.getSource()) {
                 JOptionPane.showMessageDialog(
                         null,
@@ -406,7 +406,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 askRestartTheme(changeTheme);
                 System.out.println("Blue theme");
             }
-            
+
             if (themeGreen == ae.getSource()) {
                 JOptionPane.showMessageDialog(
                         null,
@@ -418,7 +418,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 askRestartTheme(changeTheme);
                 System.out.println("Green theme");
             }
-            
+
             if (themePink == ae.getSource()) {
                 JOptionPane.showMessageDialog(
                         null,
@@ -439,7 +439,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                         JOptionPane.PLAIN_MESSAGE
                 );
             }
-            
+
             if (instr == ae.getSource()) {
                 JOptionPane.showMessageDialog(null, "Instructions:\r\n" + "\r\n"
                                 + "· You are presented with a board of squares. Some squares contain mines (bombs), others don't. \r\n"
@@ -499,26 +499,26 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 int columns = gameDifficulty.getColumns();
                 int mineCount = gameDifficulty.getMineCount();
                 initGame(rows, columns, mineCount);
-            } else if (changeTheme.equals("blue")) { 
+            } else if (changeTheme.equals("blue")) {
                 topPanel.setBackground(Color.blue);            // Blue theme
-                
+
                 int rows = gameDifficulty.getRow();
                 int columns = gameDifficulty.getColumns();
                 int mineCount = gameDifficulty.getMineCount();
                 initGame(rows, columns, mineCount);
-            } else if (changeTheme.equals("green")) { 
+            } else if (changeTheme.equals("green")) {
                 topPanel.setBackground(Color.green);           // Green theme
                 int rows = gameDifficulty.getRow();
                 int columns = gameDifficulty.getColumns();
                 int mineCount = gameDifficulty.getMineCount();
                 initGame(rows, columns, mineCount);
-            } else if (changeTheme.equals("pink")) { 
+            } else if (changeTheme.equals("pink")) {
                 topPanel.setBackground(Color.magenta);         // Pink theme
                 int rows = gameDifficulty.getRow();
                 int columns = gameDifficulty.getColumns();
                 int mineCount = gameDifficulty.getMineCount();
                 initGame(rows, columns, mineCount);
-            } else {    
+            } else {
                 topPanel.setBackground(Color.white);          // Light theme
                 int rows = gameDifficulty.getRow();
                 int columns = gameDifficulty.getColumns();
@@ -601,7 +601,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     } else {
                         btnCells[rowSelected][colSelected].setForeground(FGCOLOR_REVEALED);
                         btnCells[rowSelected][colSelected].setBackground(BGCOLOR_REVEALED);
-
                         btnCells[rowSelected][colSelected].setText(String.valueOf(surroundingMineNum));
                         System.out.println("Below is the surroundMineNum");
                         System.out.println(surroundingMineNum);
@@ -625,7 +624,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 }
 
             }
-            // [TODO 7] Check if the player has won, after revealing this cell
+            //if you finish clicking on all the numbers, eg got 9 rows x 10 cols = 81 - 10 (mineCounts) = 71
+            //so meaning you reveal all 71 so you won
             if (numRevealed == (rows * columns) - numMines) {
                 JOptionPane.showMessageDialog(
                         null,
@@ -633,12 +633,13 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE
                 );
+                //Don't let user click anymore coz he won already
                 for (int row = 0; row < rows; ++row) {
                     for (int col = 0; col < columns; ++col) {
                         btnCells[row][col].removeMouseListener(this);
                         btnCells[row][col].setEnabled(false);
-                    }// end of inner for loop
-                }// end of for loop
+                    }
+                }
             }
         }
 
@@ -650,11 +651,10 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
          * @param row
          * @param col
          */
+        // Stackoverflow link : https://stackoverflow.com/questions/14077521/recursive-floodfill-overflowing
         private void revealBlanks(int row, int col) {
             int rows = gameDifficulty.getRow();
             int columns = gameDifficulty.getColumns();
-
-
 
             if (row < 0 || row >= rows || col < 0 || col >= columns) {
                 return;
@@ -672,12 +672,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             int surroundingMineNum = calculateMineNumber(row, col);
             if (surroundingMineNum > 0) {
                 btnCells[row][col].setText(String.valueOf(surroundingMineNum));
-
                 return;
             }
-            // I apparently cannot do a for-loop to a recursion for the flood fill algorithm
-            // Stackoverflow link : https://stackoverflow.com/questions/14077521/recursive-floodfill-overflowing
-            // And since I have only so little terms I wrote it out so YAY! :)
             // Max 8 terms for 2D array
             revealBlanks(row - 1, col - 1);
             revealBlanks(row - 1, col);
@@ -689,7 +685,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             revealBlanks(row, col + 1);
         }
 
-        // this is to calculate the surrounding mine number
+        // this is to calculate the surrounding mine number //still need to read
         private int calculateMineNumber(int row, int col) {
             int rows = gameDifficulty.getRow();
             int columns = gameDifficulty.getColumns();
