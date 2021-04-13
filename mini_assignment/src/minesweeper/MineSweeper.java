@@ -19,7 +19,7 @@ import java.util.Random;
  * mine.
  */
 @SuppressWarnings("serial")
-public final class TestMineSweeper implements ActionListener, MouseListener {
+public final class MineSweeper implements ActionListener, MouseListener {
     private JFrame screen = null;
     private JPanel contentPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
@@ -55,7 +55,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     int numRevealed;
 
     // Constructor to set up all the UI and game components
-    public TestMineSweeper() {
+    public MineSweeper() {
         final int rows = gameDifficulty.getRow();
         final int columns = gameDifficulty.getColumns();
         final int mineCount = gameDifficulty.getMineCount();
@@ -250,7 +250,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
     public static void main(String[] args) {
         //[TODO 1]
-        TestMineSweeper ms = new TestMineSweeper();
+        MineSweeper ms = new MineSweeper();
     }
 
     @Override
