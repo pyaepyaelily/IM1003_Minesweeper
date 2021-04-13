@@ -21,7 +21,6 @@ import java.util.Random;
  */
 @SuppressWarnings("serial")
 public final class TestMineSweeper implements ActionListener, MouseListener {
-    //From another minesweeper project
     private JFrame screen = null;
     private JPanel contentPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
@@ -40,17 +39,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
     ImageIcon num3ImageIcon = mineSweeperImages.getImage("num3");
     ImageIcon deadImageIcon = mineSweeperImages.getImage("dead");
 
-    // Name-constants for the game properties
-//    public int rows = 10;
-//    public int columns = 10;
-//    public int numMines = 10;
 
-    public Container cp;
     // Name-constants for UI control (sizes, colors and fonts)
     public static final int CELL_SIZE = 60;  // Cell width and height, in pixels
-    //    public static final int CANVAS_WIDTH = CELL_SIZE * COLS; // Game board width/height
-//    public static final int CANVAS_HEIGHT = CELL_SIZE * ROWS;
-//    public static final Color BGCOLOR_NOT_REVEALED = Color.GREEN;
     public static final Color FGCOLOR_NOT_REVEALED = Color.RED;    // flag
     public static final Color BGCOLOR_REVEALED = Color.DARK_GRAY;
     public static final Color FGCOLOR_REVEALED = Color.LIGHT_GRAY; // number of mines
@@ -97,12 +88,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         restartButton.addActionListener(this);
         restartButton.addMouseListener(this);
 
-        //Need to change this
-//        topPanel.setLayout(new BorderLayout());
         topPanel.add(restartButton, BorderLayout.CENTER);
         topPanel.setPreferredSize(new Dimension(35, 35));
-//        contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 1, 1));
-//        contentPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
         contentPanel.setBackground(Color.BLUE);
         contentPanel.setLayout(new BorderLayout());
@@ -149,7 +136,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 for (int col = 0; col < columns; col++) {
                     // Set all cells to un-revealed
 //                btnCells[row][col] = new JButton();  // Allocate each JButton of the array
-//                buttonPanel.add(btnCells[row][col]);
                     btnCells[row][col].setEnabled(true);  // enable button
                     btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
                     btnCells[row][col].setBackground(Color.white);
@@ -610,16 +596,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     if (surroundingMineNum == 0) {
                         // A recursive method to find all empty spots
                         revealBlanks(rowSelected, colSelected);
-//                    } else if (surroundingMineNum == 1) {
-//                        btnCells[rowSelected][colSelected].setIcon(num1ImageIcon);
-//                        btnCells[rowSelected][colSelected].removeMouseListener(this);
-//                        btnCells[rowSelected][colSelected].setEnabled(false);
-//                        numRevealed++;
-//                    } else if (surroundingMineNum == 2) {
-//                        btnCells[rowSelected][colSelected].setIcon(num2ImageIcon);
-//                        btnCells[rowSelected][colSelected].removeMouseListener(this);
-//                        btnCells[rowSelected][colSelected].setEnabled(false);
-//                        numRevealed++;
                     } else {
                         btnCells[rowSelected][colSelected].setForeground(FGCOLOR_REVEALED);
                         btnCells[rowSelected][colSelected].setBackground(BGCOLOR_REVEALED);
@@ -644,11 +620,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 // Otherwise, plant a flag.
                 if (flags[rowSelected][colSelected]) {
                     btnCells[rowSelected][colSelected].setIcon(null);
-//                    btnCells[rowSelected][colSelected].setText("");
                     flags[rowSelected][colSelected] = false;
                 } else {
                     btnCells[rowSelected][colSelected].setIcon(flagImageIcon);
-//                    btnCells[rowSelected][colSelected].setText("flag");
                     flags[rowSelected][colSelected] = true;
                 }
 
