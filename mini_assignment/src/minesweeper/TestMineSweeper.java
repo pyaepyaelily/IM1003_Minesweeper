@@ -10,8 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Random;
-//import sun.audio.AudioPlayer;
-//import sun.audio.AudioStream;
+
 
 /**
  * The Mine Sweeper Game. Left-click to reveal a cell. Right-click to
@@ -183,11 +182,11 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             }
         } else if (topPanel.getBackground() == Color.blue) {        // Blue theme
             for (int row = 0; row < rows; row++) {
-                Color myOceanColor = new Color(0, 105, 148);        // custom color constructor for blue theme
+                Color myBlueColor = new Color(0, 105, 148);        // custom color constructor for blue theme
                 for (int col = 0; col < columns; col++) {
                     btnCells[row][col].setEnabled(true);  // enable button
                     btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
-                    btnCells[row][col].setBackground(myOceanColor);
+                    btnCells[row][col].setBackground(myBlueColor);
                     btnCells[row][col].setFont(FONT_NUMBERS);
                     btnCells[row][col].addMouseListener(listener);
                     btnCells[row][col].setText("");       // display blank
@@ -198,11 +197,11 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             }
         } else if (topPanel.getBackground() == Color.green) {       // Green theme
             for (int row = 0; row < rows; row++) {
-                Color myForestColor = new Color(1, 152, 117);       // custom color constructor for green theme
+                Color myGreenColor = new Color(1, 152, 117);       // custom color constructor for green theme
                 for (int col = 0; col < columns; col++) {
                     btnCells[row][col].setEnabled(true);  // enable button
                     btnCells[row][col].setForeground(FGCOLOR_NOT_REVEALED);
-                    btnCells[row][col].setBackground(myForestColor);
+                    btnCells[row][col].setBackground(myGreenColor);
                     btnCells[row][col].setFont(FONT_NUMBERS);
                     btnCells[row][col].addMouseListener(listener);
                     btnCells[row][col].setText("");       // display blank
@@ -259,15 +258,6 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
 
     public static void main(String[] args) {
-        try {
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("./Last-Surprise.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(inputStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (Exception e) {
-            //woops
-        }
-
         //[TODO 1]
         TestMineSweeper ms = new TestMineSweeper();
     }
@@ -334,14 +324,14 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
         help.add(tips);
 
         ActionListener MENULSTNR = ae -> {
-            if (miNew == ae.getSource()) {
+            if (miNew == ae.getSource()) {      // Start a new game
                 clearGame();
                 screen.setPreferredSize(new Dimension(600, 600));
                 screen.setResizable(false);
                 gameDifficulty = new GameDifficulty(Level.BEGINNER);
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
             }
-            if (miBeg == ae.getSource()) {
+            if (miBeg == ae.getSource()) {      // Start a new game with beginner difficulty
                 screen.setPreferredSize(new Dimension(600, 600));
                 screen.setResizable(false);
                 clearGame();
@@ -349,7 +339,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
             }
-            if (miInter == ae.getSource()) {
+            if (miInter == ae.getSource()) {    // Start a new game with intermediate difficulty
                 clearGame();
                 screen.setPreferredSize(new Dimension(800, 700));
                 screen.setResizable(false);
@@ -357,7 +347,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 initGame(gameDifficulty.getRow(), gameDifficulty.getColumns(), gameDifficulty.getMineCount());
 
             }
-            if (miExp == ae.getSource()) {
+            if (miExp == ae.getSource()) {      // Start a new game with expert difficulty
                 clearGame();
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 screen.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
@@ -366,13 +356,15 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
 
             }
 
-            if (miExit == ae.getSource()) {
+            if (miExit == ae.getSource()) {     // Close entire window
                 if (screen != null) {
                     screen.dispose();
                 }
                 System.exit(0);
 
             }
+            
+            // Various theme settings 
             if (themeLight == ae.getSource()) {
                 JOptionPane.showMessageDialog(
                         null,
@@ -382,9 +374,9 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 );
                 String changeTheme = "light";
                 askRestartTheme(changeTheme);
-
                 System.out.println("Light theme");
             }
+            
             if (themeDark == ae.getSource()) {
 
                 JOptionPane.showMessageDialog(
@@ -564,17 +556,20 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
             // Left-click to reveal a cell; Right-click to plant/remove the flag.
             if (e.getButton() == MouseEvent.BUTTON1) {  // Left-button clicked
                 // [TODO 5] If you hit a mine, game over
-                // Otherwise, reveal the cell and display the number of surrounding mines
+                // Otherwise, reveal the cell and display the number of surrounding mines (recursion) 
 
                 //If you select the cell that contains mine, you lose
                 if (mines[rowSelected][colSelected]) {
-                    try {
-                        InputStream in = new FileInputStream(new File("./boom.wav"));
-//                        AudioStream a = new AudioStream(in);
-//                        AudioPlayer.player.start(a);
+                    try {   // audio for clicking on a mine
+                        File boomFile = new File("Audio./boom.wav"); 
+                        AudioInputStream audioIn = AudioSystem.getAudioInputStream(boomFile);
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(audioIn);
+                        clip.start();
                     } catch (Exception ex) {
                         //woops
                     }
+                    
                     for (int row = 0; row < rows; ++row) {
                         for (int col = 0; col < columns; ++col) {
                             if (mines[row][col]) {
@@ -596,7 +591,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                     );
                 } else {
                     int surroundingMineNum = calculateMineNumber(rowSelected, colSelected);
-                    //If no mines around, revel
+                    //If no mines around, reveal
                     btnCells[rowSelected][colSelected].setIcon(null);
                     if (surroundingMineNum == 0) {
                         // A recursive method to find all empty spots
@@ -627,8 +622,8 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 }
 
             }
-            //if you finish clicking on all the numbers, eg got 9 rows x 10 cols = 81 - 10 (mineCounts) = 71
-            //so meaning you reveal all 71 so you won
+            //if you finish clicking on all the numbers, eg got 9 rows x 9 cols = 81 - 10 (mineCounts) = 71
+            //so meaning you reveal all 71 empty cells so you won
             if (numRevealed == (rows * columns) - numMines) {
                 JOptionPane.showMessageDialog(
                         null,
@@ -677,7 +672,7 @@ public final class TestMineSweeper implements ActionListener, MouseListener {
                 btnCells[row][col].setText(String.valueOf(surroundingMineNum));
                 return;
             }
-            // Max 8 terms for 2D array
+            // Max 8 terms for 2D array 
             revealBlanks(row - 1, col - 1);
             revealBlanks(row - 1, col);
             revealBlanks(row - 1, col + 1);
